@@ -9,6 +9,7 @@ var app = new EmberApp();
   
 app.import("bower_components/foundation/css/normalize.css");
 app.import("bower_components/foundation/css/foundation.css");
+app.import("bower_components/foundation/css/foundation.css.map", {destDir: "assets"});
 // If you need to use different assets in different
 // environments, specify an object as the first parameter. That
 // object's keys should be the environment name and the values
