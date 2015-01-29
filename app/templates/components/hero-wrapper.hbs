@@ -5,6 +5,10 @@
   Build Your Events On A Map. Check Out New Places. Explore. </h3>
 
 <div {{bind-attr class=":hero-buttons"}} >
-  <a href="#" class="button large" id="hero-button1"> Get Started </a>
-  <a href="#" class="button large" id="hero-button2"> Learn More </a>
+  {{#anchor-link class="button large" id="hero-button1"}}
+    Get Started
+  {{/anchor-link}}
+  {{#anchor-link class="button large" id="hero-button2"}}
+    Learn More
+  {{/anchor-link}}
 </div>
