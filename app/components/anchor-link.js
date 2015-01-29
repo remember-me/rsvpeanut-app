@@ -3,6 +3,11 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'a',
 
-  attributeBindings: ['customHref:href'],
-  customHref: "#"
+  attributeBindings: ['href'],
+  
+  href: "#",
+
+  customizeHref: function() {
+    this.set('href', this.get('customHref') );
+  }.property('customHref')
 });
