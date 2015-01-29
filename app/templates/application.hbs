@@ -1,11 +1,17 @@
 {{#fixed-nav-bar}}
-  <div class="logo-words"> 
-    {{#link-to "index"}}RSVPeanut{{/link-to}}
-  
+  <div class="logo-section"> 
+
+    {{#link-to "index"}}
+      <img src="assets/images/peanutlogo.png" class="peanutlogo"></img>
+    {{/link-to}}
+
     <div class="nav-buttons">
-      {{#link-to "events" class="button radius"}}Events{{/link-to}}
-      {{#link-to "users" class="button radius" id="signin-button"}}Sign In{{/link-to}}
+      {{#link-to 'events' class="button radius" id="signin-button"}}EVENTS{{/link-to}}
+      {{#link-to 'events' class="button radius" id="signin-button"}}TEAM{{/link-to}}
+      {{#link-to 'users' class="button radius" id="signin-button"}}SIGN IN{{/link-to}}
+      {{#link-to 'events' class="button radius" id="signin-button"}}SIGN UP{{/link-to}}
     </div>
+
   </div>
 {{/fixed-nav-bar}}
 

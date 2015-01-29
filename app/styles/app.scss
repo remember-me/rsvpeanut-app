@@ -1,4 +1,5 @@
-/* nav section */
+/* nav section and hero section */
+
 
 .fixed-nav-bar {
   position: fixed;
@@ -9,75 +10,140 @@
   height: 100px;
 }
 
-.logo-words {
-    font-family: "Sigward";
-    font-size: 40px;
-    padding-left: 20px;
-    padding-top: 10px;
-    color: #212121;
+.logo-section {
+    background: #FFFFFF;
+    height: 90px;
 }
+
 
 .nav-buttons {
     float: right;
     padding-right: 20px;
+   /* margin-top: 0px;*/
 }
 
 #signin-button {
     background-color: white;
-    border: 1px solid #212121;
-    font-family: "Sigward";
-    color: #212121;
+    border: 1px solid #B3E5FC;
+    font-family: 'Oswald', sans-serif;
+    color: #0288D1;
+    margin-top: 10px;
 }
 
-.team {
-    font-family: "Sigward";
-    font-size: 40px;
-    padding-right: 20px;
-    padding-top: 10px;
-    color: #212121;
+.hero-buttons {
+  position: absolute; 
+  top: 370px; 
+  left: 0; 
+  width: 100%; 
+  text-align: center;
 }
 
-/* hero section */
-
-/*.container1 {
-    background: #212121;
-}*/
-
-.hero {
--webkit-background-size: cover;
--moz-background-size: cover;
--o-background-size: cover;
-background-size: cover;
-display: table;
-width: 100%;
+#hero-button1 {
+    background-color: #B3E5FC;
+    border: 1px solid #B3E5FC;
+    font-family: 'Oswald', sans-serif;
+    color: #0288D1;
 }
 
-.hero .container2 {
-display: table-cell;
-text-align: center;
-vertical-align: middle;
-height: 500px;
-/*background: #303F9F;*/
+#hero-button2 {
+    background-color: #FFFFFF;
+    border: 1px solid #B3E5FC;
+    font-family: 'Oswald', sans-serif;
+    color: #0288D1;
 }
 
-.hero-name {
-    font-family: "Sigward";
-    font-size: 100px;
-    font-weight: bold;
-    color: white;
-    margin: 0;
-}
 
 .hero-image {
+    height: 630px;
     width: 100%;
-    height: 550px;
-    opacity: 0.4;
+    opacity: 0.9;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: table-cell;
+    vertical-align: middle;
+    background-repeat: none;
 }
 
 
-.hero-title {
-    font-family: "Sigward";
-    font-size: 60px;
-    font-weight: lighter;
-    color: white;
+h2.hero-title { 
+  position: absolute; 
+  top: 200px; 
+  left: 0; 
+  width: 100%; 
+  text-align: center;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 48px;
+}
+
+h3.hero-text { 
+  margin: 0;
+  position: absolute; 
+  top: 270px; 
+  left: 0; 
+  width: 100%; 
+  text-align: center;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+
+
+
+/* learn more section */
+
+
+.example-image {
+    padding-top: 40px;
+    height: 447px;
+    width: 723px;
+}
+
+.section-title {
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 38px;
+    color: #00BCD4;
+    padding-top: 10px;
+}
+
+/* about section */
+
+.about-section {
+    padding-top: 40px;
+}
+
+
+.team-section {
+    padding-top: 40px;
+    background-color: #d3d3d3;
+    height: 600px;
+}
+
+.team-pad {
+    margin-left: 120px;
+    padding-top: 40px;
+}
+
+.about-text {
+ text-align: center;
+ padding-top: 10px;
+}
+
+.teampic {
+
+}
+/* footer */
+
+.copyright {
+    text-align: center;
+    margin-top: 150px;
+    color: #4d505b;
+}
+
+.footer-wrap {
+    height: 300px;
+    background-color: #B3E5FC;
 }
