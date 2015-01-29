@@ -4,12 +4,12 @@ export default Ember.Component.extend({
   tagName: "div",
   classNames: ['hero'],
 
-  baseUrl: "assets/images",
+  baseImageUrl: "assets/images",
 
   heroImage: true,
 
   heroUrl: function(){
-    return this.get('baseUrl') + "/sxsw6.png";
-  }.property('baseUrl')
+    return this.get('baseImageUrl') + "/sxsw6.png";
+  }.property('baseImageUrl')
 
 });
