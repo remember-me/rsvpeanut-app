@@ -40,7 +40,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.baseURL = '/master-plan-app/'
+    ENV.baseURL = '/rsvpeanut-app/'
   }
 
   return ENV;
