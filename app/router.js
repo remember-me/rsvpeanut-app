@@ -6,8 +6,16 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route("events");
-  this.route("users");
+  this.route("events", function() {
+    this.route("event", {
+      path: ":event_id"
+    });
+  });
+  this.route("users", function() {
+    this.route("user", {
+      path: ":user_id"
+    });
+  });
   this.route("itinerary");
 });
 

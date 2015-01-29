@@ -1,1 +1,14 @@
-<h1>HI FROM USERS</h1>
+<div class="pageClass">
+  <section class="userSection clearfix">
+    <br><br><br>
+    <h2>Users</h2>
+    <div>
+      There are currently <strong><em>{{users.length}}</em></strong> users in our dummy db
+    </div>
+    <ul class="singleUserList clearfix">
+      {{#each user in users}}
+        {{user-info user=user}}
+      {{/each}}
+    </ul>
+  </section>
+</div>

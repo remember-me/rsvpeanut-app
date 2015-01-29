@@ -1,1 +1,19 @@
-{{outlet}}
+<div class="pageClass">
+  <section class="eventSection cf">
+    <br><br><br>
+    <h2>Events</h2>
+    <div>
+      There are currently <strong><em>{{events.length}}</em></strong> events in our dummy db
+    </div>
+    <ul class="singleEventList cf">
+      {{#each event in events}}
+        <li class="singleEventListItem">
+            {{#link-to 'events.event' event tagName="h3" }}
+              {{event.name}}
+            {{/link-to}}
+          <!-- {{user-info}} -->
+        </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>

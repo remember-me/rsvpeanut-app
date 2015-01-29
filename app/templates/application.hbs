@@ -1,12 +1,12 @@
-
-<nav class="fixed-nav-bar">
-<section class="container1">
-  <div class="logo-words"> RSVPeanut
+{{#fixed-nav-bar}}
+  <div class="logo-words"> 
+    {{#link-to "index"}}RSVPeanut{{/link-to}}
+  
     <div class="nav-buttons">
-      <a href="#" class="team"> Team </a>
-      <a href="#" class="button radius" id="signin-button"> Sign In </a>
-    </nav>
- </div>
-</div>
+      {{#link-to "events" class="button radius"}}Events{{/link-to}}
+      {{#link-to "users" class="button radius" id="signin-button"}}Sign In{{/link-to}}
+    </div>
+  </div>
+{{/fixed-nav-bar}}
 
 {{outlet}}

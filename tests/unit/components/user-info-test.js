@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForComponent('users-list', 'UsersListComponent', {
+moduleForComponent('user-info', 'UserInfoComponent', {
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
 });
