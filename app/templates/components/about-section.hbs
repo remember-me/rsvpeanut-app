@@ -1,24 +1,10 @@
-<section {{bind-attr class=":about-section"}}>
-     
-        <div class="large-4 columns">
-          <img {{bind-attr src=aboutImageUrl}} />
-          <p {{bind-attr class=":step-text"}}>
-          	see all your events on a map 
-          </p>
-        </div>
-        
-        <div class="large-4 columns">
-          <img {{bind-attr src=aboutImageUrl}} />
-          <p {{bind-attr class=":step-text"}}> 
-          	filter your events to create a custom map 
-          </p>
-        </div>
-
-        <div class="large-4 columns">
-         <img {{bind-attr src=aboutImageUrl}} />
-      	  <p {{bind-attr class=":step-text"}}> 
-      	  	view your plan 
-      	  </p>
-       </div>
-   
-</section>
+<div class="row">
+  {{#each tile in aboutTiles}}
+    <div {{bind-attr class=":large-4 :columns"}} >
+      <img {{bind-attr src="tile.img"}} />
+      <p {{bind-attr class=":step-text"}}>
+      	{{tile.text}}
+      </p>
+    </div>
+  {{/each}}
+</div>

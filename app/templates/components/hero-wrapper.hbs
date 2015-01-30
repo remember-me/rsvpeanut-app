@@ -2,11 +2,11 @@
 <h2 {{bind-attr class=":hero-title"}}>
   Find Event In Your City </h2>
 <h3 {{bind-attr class=":hero-text"}}> 
-  Build Your Events On A Map. Check Out New Places. Explore. </h3>
+  Check Out New Events. Map Your Scene. Explore. </h3>
 
 <div {{bind-attr class=":hero-buttons"}} >
-  {{#each button in buttons}}
-    {{#anchor-link class=button.class id=button.attrId customHref=button.linkToHref}}
+  {{#each button in heroButtons}}
+    {{#anchor-link class=button.class id=button.attrId customHref=button.anchor}}
       {{button.content}}
     {{/anchor-link}}
   {{/each}}
