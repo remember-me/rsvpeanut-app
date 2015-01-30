@@ -42,7 +42,7 @@ Make use of the many generators for code, try `ember help generate` for more det
 ### Serving-Up to gh-pages
 * `ember build --prod`
 * `grunt gh-pages`
-* [master-plan site] (http://flexyford.github.io/master-plan-app/)
+* [rsvpeanuts site] (http://remember-me.github.io/rsvpeanuts-app/)
 
 ### Deploying
 
