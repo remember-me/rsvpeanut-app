@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: ['section'],
-    classNames: ['about-section'],
+    classNames: ['team-section'],
 
     aboutImageUrl: 'http://placehold.it/400x300&text=[img]',
 

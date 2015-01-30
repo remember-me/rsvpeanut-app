@@ -1,0 +1,13 @@
+<h3 class="section-title"> Meet Our Developers </h3>
+<div class="team-pad">
+  <div class="row">
+    <div class="large-1 columns"></div>
+    {{#each member in teamMembers}}
+      <div class="large-2 columns">
+        <img {{bind-attr class= ":teampic" src="member.img"}} />
+        <p class="about-text"> {{member.role}} </p>
+      </div>
+    {{/each}}
+    <div class="large-1 columns"></div>
+  </div>
+</div>
