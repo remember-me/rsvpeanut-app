@@ -15,6 +15,7 @@ Router.map(function() {
     this.route("user", {
       path: ":user_id"
     });
+    this.route("new");
   });
   this.route("itinerary");
 });

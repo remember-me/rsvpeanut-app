@@ -13,13 +13,13 @@ export default Ember.Component.extend({
       "class": "button large",
       "attrId": "hero-button1",
       "content": "Get Started",
-      "anchor": "#start"
+      "anchor": "start"
     }, {
       "id": 2,
       "class":  "button large",
       "attrId": "hero-button2",
       "content": "Learn More",
-      "anchor": "#learn"
+      "anchor": "learn"
     } ],
 
   heroUrl: function(){
