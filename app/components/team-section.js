@@ -2,7 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: ['section'],
-    classNames: ['about-section'],
+    classNames: ['team-section'],
+
+    attributeBindings: ['team:id'],
+
+    team: "team",
 
     teamMembers: [ {
       "id": 1,

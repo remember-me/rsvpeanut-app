@@ -12,12 +12,19 @@ Router.map(function() {
     });
   });
   this.route("users", function() {
+    this.route("new");
+
     this.route("user", {
       path: ":user_id"
     });
-    this.route("new");
   });
-  this.route("itinerary");
+  this.route("itineraries", function() {
+    this.route("new");
+
+    this.route("itinerary", {
+      path: ":itinerary_id"
+    });
+  });
 });
 
 export default Router;
