@@ -20,6 +20,10 @@ You will need the following things properly installed on your computer.
 * `npm install`
 * `bower install`
 
+## Install Foundation
+* https://github.com/artificialio/ember-cli-foundation-sass
+* Do not overwrite any files!
+
 ## Running / Development
 
 * `ember server`

@@ -2,14 +2,19 @@
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-var app = new EmberApp();
+var app = new EmberApp({
+  'ember-cli-foundation-sass': {
+    'modernizr': true,
+    'fastclick': true,
+    'foundationJs': 'all'
+  }
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
   
-app.import("bower_components/foundation/css/normalize.css");
-app.import("bower_components/foundation/css/foundation.css");
-app.import("bower_components/foundation/css/foundation.css.map", {destDir: "assets"});
+// app.import("bower_components/foundation/css/normalize.css");
+
 // If you need to use different assets in different
 // environments, specify an object as the first parameter. That
 // object's keys should be the environment name and the values
