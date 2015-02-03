@@ -8,9 +8,10 @@ export default Ember.Component.extend({
   id: "filter-section",
 
   actions: {
-    searchLocation: function(){
+    buildQuery: function() {
       var query = this.get('location');
-      console.log("Searching for " + query);
+      console.log(query);
+      this.sendAction('action', query);
     },
   }
 
