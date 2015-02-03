@@ -4,8 +4,7 @@ export default Ember.Controller.extend({
   actions: {
     search: function(query){
       var store = this.store;
-      var location = query.location
-      debugger;
+      var location = query.location;
       store.find('event', query)
       .then(function(){
         alert('Requested Events for ' + location + '!');
