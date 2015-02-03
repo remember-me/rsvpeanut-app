@@ -9,9 +9,10 @@ export default Ember.Component.extend({
 
   actions: {
     buildQuery: function() {
+      debugger;
       var query = this.get('location');
       console.log(query);
-      this.sendAction('action', query);
+      this.sendAction('search', {location: query} );
     },
   }
 
