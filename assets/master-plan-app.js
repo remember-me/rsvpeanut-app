@@ -24,7 +24,7 @@ define('master-plan-app/adapters/user', ['exports', './application'], function (
 	exports['default'] = ApplicationAdapter['default'].extend({});
 
 });
-define('master-plan-app/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializers', './config/environment'], function (exports, Ember, Resolver, loadInitializers, config) {
+define('master-plan-app/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializers', './config/environment', './overrides/textfield'], function (exports, Ember, Resolver, loadInitializers, config, TextField) {
 
   'use strict';
 
@@ -47,7 +47,7 @@ define('master-plan-app/components/about-section', ['exports', 'ember'], functio
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: ["section"],
-    classNames: ["team-section"],
+    classNames: ["about-section"],
 
     aboutImageUrl: "http://placehold.it/400x300&text=[img]",
 
@@ -74,7 +74,13 @@ define('master-plan-app/components/anchor-link', ['exports', 'ember'], function 
   exports['default'] = Ember['default'].Component.extend({
     tagName: "a",
 
-    attributeBindings: ["hrefAnchorTag:href"],
+    attributeBindings: ["hrefAnchorTag:href", "customModal:data-reveal-id", "id"],
+
+
+    customModal: (function () {
+      var customModal = this.get("modal");
+      return customModal ? customModal : null;
+    }).property("modal"),
 
     hrefAnchorTag: (function () {
       var customHref = this.get("customHref");
@@ -90,7 +96,11 @@ define('master-plan-app/components/fixed-nav-bar', ['exports', 'ember'], functio
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: "nav",
-    classNames: ["fixed-nav-bar"]
+    classNames: ["fixed-nav-bar"],
+
+    didInsertElement: function () {
+      this.$().foundation(); //or Ember.$(document).foundation();
+    }
   });
 
 });
@@ -99,16 +109,9 @@ define('master-plan-app/components/footer-wrap', ['exports', 'ember'], function 
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
-    classNames: ["footer-wrap"]
+    classNames: ["footer-section"]
 
   });
-
-});
-define('master-plan-app/components/form-field', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Component.extend({});
 
 });
 define('master-plan-app/components/foundation-row-wrapper', ['exports', 'ember'], function (exports, Ember) {
@@ -130,7 +133,7 @@ define('master-plan-app/components/hero-wrapper', ['exports', 'ember'], function
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: "div",
-    classNames: ["hero"],
+    classNames: ["hero-words"],
 
     baseImageUrl: "assets/images",
 
@@ -138,13 +141,13 @@ define('master-plan-app/components/hero-wrapper', ['exports', 'ember'], function
 
     heroButtons: [{
       id: 1,
-      "class": "button large",
+      "class": "button radius",
       attrId: "hero-button1",
       content: "Get Started",
       anchor: "start"
     }, {
       id: 2,
-      "class": "button large",
+      "class": "button radius",
       attrId: "hero-button2",
       content: "Learn More",
       anchor: "learn"
@@ -174,13 +177,90 @@ define('master-plan-app/components/learn-section', ['exports', 'ember'], functio
   });
 
 });
+define('master-plan-app/components/map-container', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNames: ["map"]
+
+  });
+
+});
+define('master-plan-app/components/map-filter-bar', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNames: ["filter-section"],
+
+    attributeBindings: ["id"],
+
+    id: "filter-section",
+
+    actions: {
+      buildQuery: function () {
+        var query = this.get("location");
+        console.log(query);
+        this.sendAction("search", { location: query });
+      } }
+
+  });
+
+});
+define('master-plan-app/components/map-filter-left', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNames: ["filter-vertical-left"]
+
+  });
+
+});
+define('master-plan-app/components/map-filter-right', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNames: ["filter-vertical-right"]
+
+  });
+
+});
+define('master-plan-app/components/map-title', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Component.extend({});
+
+});
+define('master-plan-app/components/signup-modal', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Component.extend({
+    classNames: ["reveal-modal"],
+
+    attributeBindings: ["modalId:id", "dataReveal:data-reveal"],
+
+    modalId: "signup",
+    dataReveal: ""
+
+  });
+
+});
 define('master-plan-app/components/team-section', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Component.extend({
     tagName: ["section"],
-    classNames: ["about-section"],
+    classNames: ["team-section"],
+
+    attributeBindings: ["team:id"],
+
+    team: "team",
 
     teamMembers: [{
       id: 1,
@@ -229,6 +309,24 @@ define('master-plan-app/components/user-info', ['exports', 'ember'], function (e
   });
 
 });
+define('master-plan-app/controllers/events', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+    actions: {
+      search: function (query) {
+        var store = this.store;
+        var location = query.location;
+        store.find("event", query).then(function () {
+          alert("Requested Events for " + location + "!");
+        })["catch"](function () {
+          alert("Failed to request Events for " + location + "!");
+        });
+      } }
+  });
+
+});
 define('master-plan-app/controllers/users/new', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -236,7 +334,6 @@ define('master-plan-app/controllers/users/new', ['exports', 'ember'], function (
   exports['default'] = Ember['default'].Controller.extend({
     actions: {
       createUser: function () {
-        debugger;
         var user = this.store.createRecord("user");
         user.set("first", this.get("first"));
         user.set("last", this.get("last"));
@@ -276,9 +373,24 @@ define('master-plan-app/initializers/export-application-global', ['exports', 'em
 });
 define('master-plan-app/models/event', ['exports', 'ember-data'], function (exports, DS) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = DS['default'].Model.extend({});
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr("string"),
+    event_type: DS['default'].attr("string"),
+    location: DS['default'].attr("string"),
+    event_start: DS['default'].attr("date"),
+    event_end: DS['default'].attr("date"),
+    attendees: DS['default'].attr("number"),
+    cost: DS['default'].attr("number"),
+    created_at: DS['default'].attr("date"),
+    updated_at: DS['default'].attr("date"),
+    description: DS['default'].attr("string"),
+    lat: DS['default'].attr("string"),
+    long: DS['default'].attr("string"),
+    event_url: DS['default'].attr("string"),
+    source: DS['default'].attr("string")
+  });
 
 });
 define('master-plan-app/models/itinerary', ['exports', 'ember-data'], function (exports, DS) {
@@ -302,6 +414,15 @@ define('master-plan-app/models/user', ['exports', 'ember-data'], function (expor
   });
 
 });
+define('master-plan-app/overrides/textfield', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].TextField.reopen({
+    attributeBindings: ["data-toggle", "data-placement", "data-date-format", "placeholder"]
+  });
+
+});
 define('master-plan-app/router', ['exports', 'ember', './config/environment'], function (exports, Ember, config) {
 
   'use strict';
@@ -317,12 +438,19 @@ define('master-plan-app/router', ['exports', 'ember', './config/environment'], f
       });
     });
     this.route("users", function () {
+      this.route("new");
+
       this.route("user", {
         path: ":user_id"
       });
-      this.route("new");
     });
-    this.route("itinerary");
+    this.route("itineraries", function () {
+      this.route("new");
+
+      this.route("itinerary", {
+        path: ":itinerary_id"
+      });
+    });
   });
 
   exports['default'] = Router;
@@ -330,24 +458,16 @@ define('master-plan-app/router', ['exports', 'ember', './config/environment'], f
 });
 define('master-plan-app/routes/events', ['exports', 'ember'], function (exports, Ember) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = Ember['default'].Route.extend({
-    model: function () {
-      return this.store.find("event");
-    }
-  });
+	exports['default'] = Ember['default'].Route.extend({});
 
 });
 define('master-plan-app/routes/events/event', ['exports', 'ember'], function (exports, Ember) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = Ember['default'].Route.extend({
-    model: function (params) {
-      return this.store.find("event", params.event_id);
-    }
-  });
+	exports['default'] = Ember['default'].Route.extend({});
 
 });
 define('master-plan-app/routes/index', ['exports', 'ember'], function (exports, Ember) {
@@ -357,7 +477,21 @@ define('master-plan-app/routes/index', ['exports', 'ember'], function (exports, 
 	exports['default'] = Ember['default'].Route.extend({});
 
 });
-define('master-plan-app/routes/itinerary', ['exports', 'ember'], function (exports, Ember) {
+define('master-plan-app/routes/itineraries', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend({});
+
+});
+define('master-plan-app/routes/itineraries/itinerary', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].Route.extend({});
+
+});
+define('master-plan-app/routes/itineraries/new', ['exports', 'ember'], function (exports, Ember) {
 
 	'use strict';
 
@@ -382,15 +516,15 @@ define('master-plan-app/routes/users', ['exports', 'ember'], function (exports, 
 
     setupController: function (controller, model) {
       controller.set("users", model.content);
-    },
-
-    renderTemplate: function () {
-      this._super();
-      this.render("users/new", {
-        into: "users",
-        controller: "users.new"
-      });
     }
+
+    // renderTemplate: function () {
+    //   this._super();
+    //   this.render('users/new', {
+    //     into: 'users',
+    //     controller: 'users.new'
+    //   });
+    // }
   });
 
 });
@@ -449,23 +583,28 @@ define('master-plan-app/templates/application', ['exports', 'ember'], function (
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n\n    <div class=\"nav-buttons\">\n      ");
     stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
-      'class': ("button radius signin-button")
+      'class': ("events")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "events", options) : helperMissing.call(depth0, "link-to", "events", options));
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n      ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
-      'class': ("button radius signin-button")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users", options) : helperMissing.call(depth0, "link-to", "users", options));
+    stack1 = (helper = helpers['anchor-link'] || (depth0 && depth0['anchor-link']),options={hash:{
+      'class': ("events"),
+      'customHref': ("team")
+    },hashTypes:{'class': "STRING",'customHref': "STRING"},hashContexts:{'class': depth0,'customHref': depth0},inverse:self.noop,fn:self.program(6, program6, data),contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "anchor-link", options));
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n      ");
     stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
-      'class': ("button radius signin-button")
+      'class': ("events")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users", options) : helperMissing.call(depth0, "link-to", "users", options));
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n      ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
-      'class': ("button radius signin-button")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(10, program10, data),contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users", options) : helperMissing.call(depth0, "link-to", "users", options));
+    stack1 = (helper = helpers['anchor-link'] || (depth0 && depth0['anchor-link']),options={hash:{
+      'class': ("events"),
+      'modal': ("signup")
+    },hashTypes:{'class': "STRING",'modal': "STRING"},hashContexts:{'class': depth0,'modal': depth0},inverse:self.noop,fn:self.program(10, program10, data),contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "anchor-link", options));
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n      ");
+    stack1 = helpers._triageMustache.call(depth0, "signup-modal", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n    </div>\n\n  </div>\n");
     return buffer;
@@ -473,7 +612,7 @@ define('master-plan-app/templates/application', ['exports', 'ember'], function (
   function program2(depth0,data) {
     
     
-    data.buffer.push("\n      <img src=\"assets/images/peanutlogo.png\" class=\"peanutlogo\"></img>\n    ");
+    data.buffer.push("\n      <img src=\"assets/images/simpletext2.png\" class=\"peanutlogo\"></img>\n    ");
     }
 
   function program4(depth0,data) {
@@ -508,7 +647,10 @@ define('master-plan-app/templates/application', ['exports', 'ember'], function (
     data.buffer.push("\n\n");
     stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n");
+    data.buffer.push("\n\n");
+    stack1 = helpers._triageMustache.call(depth0, "footer-wrap", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n\n\n");
     return buffer;
     
   });
@@ -601,7 +743,7 @@ define('master-plan-app/templates/components/footer-wrap', ['exports', 'ember'],
   function program1(depth0,data) {
     
     
-    data.buffer.push("    \n  <p class=\"copyright\">© Copyright RSVPeanut </p>\n");
+    data.buffer.push("\n\n  <div class=\"footer-wrap\">\n    <span class=\"copyright-text\"> © Copyright RSVPeanut </span>\n    <span class=\"groupgithub\">\n      <a href=\"https://github.com/remember-me\">\n        <img src=\"assets/images/groupgithub.png\"/>\n      </a>\n    </span>\n  </div>\n  \n");
     }
 
     data.buffer.push("<!--footer-->\n");
@@ -640,7 +782,7 @@ define('master-plan-app/templates/components/form-field', ['exports', 'ember'], 
       'id': ("label"),
       'class': ("form-control")
     },hashTypes:{'type': "ID",'value': "ID",'id': "ID",'class': "STRING"},hashContexts:{'type': depth0,'value': depth0,'id': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("\n</div>\n");
+    data.buffer.push("\n</div>");
     return buffer;
     
   });
@@ -701,15 +843,7 @@ define('master-plan-app/templates/components/hero-wrapper', ['exports', 'ember']
     return buffer;
     }
 
-    data.buffer.push("<img ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
-      'src': ("heroUrl")
-    },hashTypes:{'src': "ID"},hashContexts:{'src': depth0},contexts:[],types:[],data:data})));
-    data.buffer.push(" ");
-    data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
-      'class': ("heroImage")
-    },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
-    data.buffer.push(" />\n<h2 ");
+    data.buffer.push("\n<h1 ");
     data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
       'class': (":hero-title")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
@@ -717,7 +851,7 @@ define('master-plan-app/templates/components/hero-wrapper', ['exports', 'ember']
     data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
       'class': (":hero-text")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
-    data.buffer.push("> \n  Check Out New Events. Map Your Scene. Explore. </h3>\n\n<div ");
+    data.buffer.push("> \n  View Events On a Map. Save Your Plan. Explore. </h3>\n\n<div ");
     data.buffer.push(escapeExpression(helpers['bind-attr'].call(depth0, {hash:{
       'class': (":hero-buttons")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
@@ -753,6 +887,154 @@ define('master-plan-app/templates/components/learn-section', ['exports', 'ember'
       'class': (":example-image")
     },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},contexts:[],types:[],data:data})));
     data.buffer.push(" />\n</center>\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/map-container', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1;
+
+
+    data.buffer.push("\n<!--mapbox iframe-->\n<div class=\"map\">\n  <iframe width='100%' height='500px' frameBorder='0' src='https://a.tiles.mapbox.com/v4/jessicameyer.l366pfo3/attribution,zoompan,zoomwheel,geocoder,share.html?access_token=pk.eyJ1IjoiamVzc2ljYW1leWVyIiwiYSI6ImhBZDB3a1kifQ._wbp2K1vx0EjLTLlqNtX2g'></iframe>\n</div>\n\n");
+    stack1 = helpers._triageMustache.call(depth0, "yield", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/map-filter-bar', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+    data.buffer.push("<!--map search, date, popular event toggle row-->\n<div class=\"row\">\n  <div class=\"filter-row\">\n    <div class=\"large-1 columns\"></div>\n    <div class=\"large-4 columns\">\n      <div class=\"panel\" id=\"search-panel\">\n        <li class=\"has-form\" id=\"search-row\">\n          <div class=\"row collapse\">\n            <div class=\"large-8 small-9 columns\">\n              ");
+    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+      'value': ("location"),
+      'class': ("search"),
+      'placeholder': ("Enter City or Zip")
+    },hashTypes:{'value': "ID",'class': "STRING",'placeholder': "STRING"},hashContexts:{'value': depth0,'class': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+    data.buffer.push("\n            </div>\n            <div class=\"large-4 small-3 columns\">\n              <button class=\"button small\" id=\"submit-button\" type=\"submit\" ");
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "buildQuery", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    data.buffer.push(">");
+    stack1 = helpers._triageMustache.call(depth0, "searchTitle", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("</button>\n            </div>\n          </div>\n        </li>\n      </div>\n    </div>\n    <div class=\"large-3 columns\">\n      <div class=\"calendar\">\n        <div class=\"panel\">\n          ");
+    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+      'value': ("startDate"),
+      'class': ("span2"),
+      'data-date-format': ("mm/dd/yy"),
+      'id': ("dp2"),
+      'placeholder': ("Choose Start Date")
+    },hashTypes:{'value': "ID",'class': "STRING",'data-date-format': "STRING",'id': "STRING",'placeholder': "STRING"},hashContexts:{'value': depth0,'class': depth0,'data-date-format': depth0,'id': depth0,'placeholder': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+    data.buffer.push("\n        </div>\n      </div>\n    </div>\n    <div class=\"large-3 columns\">\n      <div class=\"panel\">\n        <div class=\"switch\">\n          ");
+    data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
+      'value': ("false"),
+      'id': ("exampleCheckboxSwitch"),
+      'type': ("checkbox")
+    },hashTypes:{'value': "STRING",'id': "STRING",'type': "STRING"},hashContexts:{'value': depth0,'id': depth0,'type': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+    data.buffer.push("\n          <label for=\"exampleCheckboxSwitch\"></label>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
+    stack1 = helpers._triageMustache.call(depth0, "yield", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/map-filter-left', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1;
+
+
+    data.buffer.push("<!--filter-left-->\n<div class=\"icon-bar large-vertical four-up\">\n  <a class=\"item\">\n    <img src=\"assets/images/smallfilter.png\" >\n    <label>Filter</label>\n  </a>\n  <a class=\"item\">\n    <img src=\"assets/images/smallinfo.png\" >\n    <label>Info</label>\n  </a>\n</div>\n");
+    stack1 = helpers._triageMustache.call(depth0, "yield", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/map-filter-right', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1;
+
+
+    data.buffer.push("<!--filter-right-->\n<div class=\"icon-bar large-vertical four-up\">\n  <a class=\"item\">\n    <img src=\"assets/images/smallnew.png\" >\n    <label>Create</label>\n  </a>\n  <a class=\"item\">\n    <img src=\"assets/images/smallplan.png\" >\n    <label>Plans</label>\n  </a>\n</div>\n");
+    stack1 = helpers._triageMustache.call(depth0, "yield", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/map-title', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1, helper, options, self=this, helperMissing=helpers.helperMissing;
+
+  function program1(depth0,data) {
+    
+    var buffer = '', stack1;
+    data.buffer.push("\n\n  <h1 class=\"create-title\"> Create Your Plan </h1>\n  <p class=\"create-text\"> Filter Events by Location, Date and Type. Save Your Plan and Explore. </p> \n\n  ");
+    stack1 = helpers._triageMustache.call(depth0, "yield", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n  \n");
+    return buffer;
+    }
+
+    data.buffer.push("<!--footer-->\n");
+    stack1 = (helper = helpers['foundation-row-wrapper'] || (depth0 && depth0['foundation-row-wrapper']),options={hash:{
+      'divSubClassNames': ("large-12 columns")
+    },hashTypes:{'divSubClassNames': "STRING"},hashContexts:{'divSubClassNames': depth0},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "foundation-row-wrapper", options));
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/components/signup-modal', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+    data.buffer.push(escapeExpression((helper = helpers.render || (depth0 && depth0.render),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "users.new", options) : helperMissing.call(depth0, "render", "users.new", options))));
+    data.buffer.push("\n");
     return buffer;
     
   });
@@ -831,39 +1113,27 @@ define('master-plan-app/templates/events', ['exports', 'ember'], function (expor
   exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
   helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1, self=this, helperMissing=helpers.helperMissing;
+    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
-  function program1(depth0,data) {
-    
-    var buffer = '', stack1, helper, options;
-    data.buffer.push("\n        <li class=\"singleEventListItem\">\n            ");
-    stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
-      'tagName': ("h3")
-    },hashTypes:{'tagName': "STRING"},hashContexts:{'tagName': depth0},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "events.event", "event", options) : helperMissing.call(depth0, "link-to", "events.event", "event", options));
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n          <!-- ");
-    stack1 = helpers._triageMustache.call(depth0, "user-info", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push(" -->\n        </li>\n      ");
-    return buffer;
-    }
-  function program2(depth0,data) {
-    
-    var buffer = '', stack1;
-    data.buffer.push("\n              ");
-    stack1 = helpers._triageMustache.call(depth0, "event.name", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n            ");
-    return buffer;
-    }
 
-    data.buffer.push("<div class=\"pageClass\">\n  <section class=\"eventSection cf\">\n    <br><br><br>\n    <h2>Events</h2>\n    <div>\n      There are currently <strong><em>");
-    stack1 = helpers._triageMustache.call(depth0, "events.length", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    data.buffer.push("<!--create your plan title section-->\n");
+    stack1 = helpers._triageMustache.call(depth0, "map-title", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("</em></strong> events in our dummy db\n    </div>\n    <ul class=\"singleEventList cf\">\n      ");
-    stack1 = helpers.each.call(depth0, "event", "in", "events", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
+    data.buffer.push("\n\n<!-- Display Map -->\n<div class=\"row\" id=\"map-container\">\n  <!-- Display Top Horizantal Map Filters -->\n  ");
+    data.buffer.push(escapeExpression((helper = helpers['map-filter-bar'] || (depth0 && depth0['map-filter-bar']),options={hash:{
+      'searchTitle': ("Search"),
+      'search': ("search")
+    },hashTypes:{'searchTitle': "STRING",'search': "STRING"},hashContexts:{'searchTitle': depth0,'search': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "map-filter-bar", options))));
+    data.buffer.push("\n  <div class=\"large-1 columns\">\n    <!-- Display Left Vertical Map Filters -->\n    ");
+    stack1 = helpers._triageMustache.call(depth0, "map-filter-left", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n    </ul>\n  </section>\n</div>\n");
+    data.buffer.push("\n  </div>\n  <div class=\"large-10 columns\">\n    <!-- Display Map -->\n    ");
+    stack1 = helpers._triageMustache.call(depth0, "map-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n  </div>\n  <div class=\"large-1 columns\">\n    <!-- Display Right Vertical Map Filters -->\n    ");
+    stack1 = helpers._triageMustache.call(depth0, "map-filter-right", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n  </div>\n\n</div>\n");
     return buffer;
     
   });
@@ -910,11 +1180,11 @@ define('master-plan-app/templates/index', ['exports', 'ember'], function (export
     return buffer;
     }
 
-    data.buffer.push("<!-- index -->\n");
+    data.buffer.push("<!-- index -->\n<div id=\"main\">\n  <section id=\"hero\">\n    ");
     data.buffer.push(escapeExpression((helper = helpers['hero-wrapper'] || (depth0 && depth0['hero-wrapper']),options={hash:{
       'buttons': ("heroButtons")
     },hashTypes:{'buttons': "ID"},hashContexts:{'buttons': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "hero-wrapper", options))));
-    data.buffer.push("\n");
+    data.buffer.push("\n  </section>\n</div>\n");
     stack1 = (helper = helpers['foundation-row-wrapper'] || (depth0 && depth0['foundation-row-wrapper']),options={hash:{
       'divSubClassNames': ("large-12 columns")
     },hashTypes:{'divSubClassNames': "STRING"},hashContexts:{'divSubClassNames': depth0},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "foundation-row-wrapper", options));
@@ -925,16 +1195,49 @@ define('master-plan-app/templates/index', ['exports', 'ember'], function (export
     data.buffer.push("\n");
     stack1 = helpers._triageMustache.call(depth0, "team-section", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n");
-    stack1 = helpers._triageMustache.call(depth0, "footer-wrap", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n\n");
     return buffer;
     
   });
 
 });
-define('master-plan-app/templates/itinerary', ['exports', 'ember'], function (exports, Ember) {
+define('master-plan-app/templates/itineraries', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1;
+
+
+    stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/itineraries/itinerary', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+  helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
+    var buffer = '', stack1;
+
+
+    stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    
+  });
+
+});
+define('master-plan-app/templates/itineraries/new', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -959,13 +1262,10 @@ define('master-plan-app/templates/plans', ['exports', 'ember'], function (export
   exports['default'] = Ember['default'].Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
   helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var buffer = '', stack1;
+    
 
 
-    stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n");
-    return buffer;
+    data.buffer.push("<h2>Sign up to customize your itinerary!</h2>\n<p class=\"lead\">Your couch.  It is mine.</p>\n<p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>\n<a class=\"close-reveal-modal\">&#215;</a>}}");
     
   });
 
@@ -990,10 +1290,7 @@ define('master-plan-app/templates/users', ['exports', 'ember'], function (export
     return buffer;
     }
 
-    data.buffer.push("<div class=\"pageClass\">\n  ");
-    stack1 = helpers._triageMustache.call(depth0, "outlet", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n  <section class=\"userSection clearfix\">\n    <br>\n    <h2>Users</h2>\n    <div>\n      There are currently <strong><em>");
+    data.buffer.push("<div class=\"pageClass\">\n  <section class=\"userSection clearfix\">\n    <br>\n    <h2>Users</h2>\n    <div>\n      There are currently <strong><em>");
     stack1 = helpers._triageMustache.call(depth0, "users.length", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("</em></strong> users in our dummy db\n    </div>\n    <ul class=\"singleUserList clearfix\">\n      ");
@@ -1019,35 +1316,35 @@ define('master-plan-app/templates/users/new', ['exports', 'ember'], function (ex
     data.buffer.push(escapeExpression(helpers.action.call(depth0, "createUser", "model", {hash:{
       'on': ("submit")
     },hashTypes:{'on': "STRING"},hashContexts:{'on': depth0},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
-    data.buffer.push(">\n    <br><br><br>\n    <h2>Create User</h2>\n\n    <h4>First Name\"<h4>\n    ");
+    data.buffer.push(">\n    <br><br><br>\n    <h2>Create User</h2>\n\n    <h4>First Name<h4>\n    ");
     data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
       'type': ("text"),
       'value': ("first"),
       'id': ("First Name"),
       'class': ("form-control")
     },hashTypes:{'type': "STRING",'value': "ID",'id': "STRING",'class': "STRING"},hashContexts:{'type': depth0,'value': depth0,'id': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("\n    <h4>Last Name\"<h4>\n    ");
+    data.buffer.push("\n    <h4>Last Name<h4>\n    ");
     data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
       'type': ("text"),
       'value': ("last"),
       'id': ("Last Name"),
       'class': ("form-control")
     },hashTypes:{'type': "STRING",'value': "ID",'id': "STRING",'class': "STRING"},hashContexts:{'type': depth0,'value': depth0,'id': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("\n    <h4>Email\"<h4>\n    ");
+    data.buffer.push("\n    <h4>Email<h4>\n    ");
     data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
       'type': ("text"),
       'value': ("email"),
       'id': ("Email"),
       'class': ("form-control")
     },hashTypes:{'type': "STRING",'value': "ID",'id': "STRING",'class': "STRING"},hashContexts:{'type': depth0,'value': depth0,'id': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("\n    <h4>Password\"<h4>\n    ");
+    data.buffer.push("\n    <h4>Password<h4>\n    ");
     data.buffer.push(escapeExpression((helper = helpers.input || (depth0 && depth0.input),options={hash:{
       'type': ("password"),
       'value': ("password"),
       'id': ("Password"),
       'class': ("form-control")
     },hashTypes:{'type': "STRING",'value': "ID",'id': "STRING",'class': "STRING"},hashContexts:{'type': depth0,'value': depth0,'id': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("\n\n    <button class=\"btn btn-primary btn-block\" type=\"submit\">Submit</button>\n\n  </form>\n</div>");
+    data.buffer.push("\n\n    <button class=\"btn btn-primary btn-block\" type=\"submit\">Submit</button>\n  </form>\n</div>");
     return buffer;
     
   });
@@ -1132,7 +1429,7 @@ define('master-plan-app/tests/app.jshint', function () {
 
   module('JSHint - .');
   test('app.js should pass jshint', function() { 
-    ok(true, 'app.js should pass jshint.'); 
+    ok(false, 'app.js should pass jshint.\napp.js: line 6, col 8, \'TextField\' is defined but never used.\n\n1 error'); 
   });
 
 });
@@ -1176,16 +1473,6 @@ define('master-plan-app/tests/components/footer-wrap.jshint', function () {
   });
 
 });
-define('master-plan-app/tests/components/form-field.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - components');
-  test('components/form-field.js should pass jshint', function() { 
-    ok(true, 'components/form-field.js should pass jshint.'); 
-  });
-
-});
 define('master-plan-app/tests/components/foundation-row-wrapper.jshint', function () {
 
   'use strict';
@@ -1216,6 +1503,66 @@ define('master-plan-app/tests/components/learn-section.jshint', function () {
   });
 
 });
+define('master-plan-app/tests/components/map-container.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/map-container.js should pass jshint', function() { 
+    ok(true, 'components/map-container.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/components/map-filter-bar.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/map-filter-bar.js should pass jshint', function() { 
+    ok(true, 'components/map-filter-bar.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/components/map-filter-left.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/map-filter-left.js should pass jshint', function() { 
+    ok(true, 'components/map-filter-left.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/components/map-filter-right.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/map-filter-right.js should pass jshint', function() { 
+    ok(true, 'components/map-filter-right.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/components/map-title.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/map-title.js should pass jshint', function() { 
+    ok(true, 'components/map-title.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/components/signup-modal.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - components');
+  test('components/signup-modal.js should pass jshint', function() { 
+    ok(true, 'components/signup-modal.js should pass jshint.'); 
+  });
+
+});
 define('master-plan-app/tests/components/team-section.jshint', function () {
 
   'use strict';
@@ -1236,13 +1583,23 @@ define('master-plan-app/tests/components/user-info.jshint', function () {
   });
 
 });
+define('master-plan-app/tests/controllers/events.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - controllers');
+  test('controllers/events.js should pass jshint', function() { 
+    ok(true, 'controllers/events.js should pass jshint.'); 
+  });
+
+});
 define('master-plan-app/tests/controllers/users/new.jshint', function () {
 
   'use strict';
 
   module('JSHint - controllers/users');
   test('controllers/users/new.js should pass jshint', function() { 
-    ok(false, 'controllers/users/new.js should pass jshint.\ncontrollers/users/new.js: line 6, col 7, Forgotten \'debugger\' statement?\n\n1 error'); 
+    ok(true, 'controllers/users/new.js should pass jshint.'); 
   });
 
 });
@@ -1391,16 +1748,6 @@ define('master-plan-app/tests/master-plan-app/tests/unit/components/footer-wrap-
   });
 
 });
-define('master-plan-app/tests/master-plan-app/tests/unit/components/form-field-test.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - master-plan-app/tests/unit/components');
-  test('master-plan-app/tests/unit/components/form-field-test.js should pass jshint', function() { 
-    ok(true, 'master-plan-app/tests/unit/components/form-field-test.js should pass jshint.'); 
-  });
-
-});
 define('master-plan-app/tests/master-plan-app/tests/unit/components/foundation-row-wrapper-test.jshint', function () {
 
   'use strict';
@@ -1431,6 +1778,66 @@ define('master-plan-app/tests/master-plan-app/tests/unit/components/learn-sectio
   });
 
 });
+define('master-plan-app/tests/master-plan-app/tests/unit/components/map-container-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/map-container-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/map-container-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/components/map-filter-bar-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/map-filter-bar-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/map-filter-bar-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/components/map-filter-left-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/map-filter-left-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/map-filter-left-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/components/map-filter-right-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/map-filter-right-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/map-filter-right-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/components/map-title-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/map-title-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/map-title-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/components/signup-modal-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/components');
+  test('master-plan-app/tests/unit/components/signup-modal-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/components/signup-modal-test.js should pass jshint.'); 
+  });
+
+});
 define('master-plan-app/tests/master-plan-app/tests/unit/components/team-section-test.jshint', function () {
 
   'use strict';
@@ -1448,6 +1855,16 @@ define('master-plan-app/tests/master-plan-app/tests/unit/components/user-info-te
   module('JSHint - master-plan-app/tests/unit/components');
   test('master-plan-app/tests/unit/components/user-info-test.js should pass jshint', function() { 
     ok(true, 'master-plan-app/tests/unit/components/user-info-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/controllers/events-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/controllers');
+  test('master-plan-app/tests/unit/controllers/events-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/controllers/events-test.js should pass jshint.'); 
   });
 
 });
@@ -1521,13 +1938,33 @@ define('master-plan-app/tests/master-plan-app/tests/unit/routes/index-test.jshin
   });
 
 });
-define('master-plan-app/tests/master-plan-app/tests/unit/routes/itinerary-test.jshint', function () {
+define('master-plan-app/tests/master-plan-app/tests/unit/routes/itineraries-test.jshint', function () {
 
   'use strict';
 
   module('JSHint - master-plan-app/tests/unit/routes');
-  test('master-plan-app/tests/unit/routes/itinerary-test.js should pass jshint', function() { 
-    ok(true, 'master-plan-app/tests/unit/routes/itinerary-test.js should pass jshint.'); 
+  test('master-plan-app/tests/unit/routes/itineraries-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/routes/itineraries-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/routes/itineraries/itinerary-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/routes/itineraries');
+  test('master-plan-app/tests/unit/routes/itineraries/itinerary-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/routes/itineraries/itinerary-test.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/master-plan-app/tests/unit/routes/itineraries/new-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - master-plan-app/tests/unit/routes/itineraries');
+  test('master-plan-app/tests/unit/routes/itineraries/new-test.js should pass jshint', function() { 
+    ok(true, 'master-plan-app/tests/unit/routes/itineraries/new-test.js should pass jshint.'); 
   });
 
 });
@@ -1611,6 +2048,16 @@ define('master-plan-app/tests/models/user.jshint', function () {
   });
 
 });
+define('master-plan-app/tests/overrides/textfield.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - overrides');
+  test('overrides/textfield.js should pass jshint', function() { 
+    ok(true, 'overrides/textfield.js should pass jshint.'); 
+  });
+
+});
 define('master-plan-app/tests/router.jshint', function () {
 
   'use strict';
@@ -1651,13 +2098,33 @@ define('master-plan-app/tests/routes/index.jshint', function () {
   });
 
 });
-define('master-plan-app/tests/routes/itinerary.jshint', function () {
+define('master-plan-app/tests/routes/itineraries.jshint', function () {
 
   'use strict';
 
   module('JSHint - routes');
-  test('routes/itinerary.js should pass jshint', function() { 
-    ok(true, 'routes/itinerary.js should pass jshint.'); 
+  test('routes/itineraries.js should pass jshint', function() { 
+    ok(true, 'routes/itineraries.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/routes/itineraries/itinerary.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes/itineraries');
+  test('routes/itineraries/itinerary.js should pass jshint', function() { 
+    ok(true, 'routes/itineraries/itinerary.js should pass jshint.'); 
+  });
+
+});
+define('master-plan-app/tests/routes/itineraries/new.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes/itineraries');
+  test('routes/itineraries/new.js should pass jshint', function() { 
+    ok(true, 'routes/itineraries/new.js should pass jshint.'); 
   });
 
 });
@@ -1853,27 +2320,6 @@ define('master-plan-app/tests/unit/components/footer-wrap-test', ['ember-qunit']
   // needs: ['component:foo', 'helper:bar']
 
 });
-define('master-plan-app/tests/unit/components/form-field-test', ['ember-qunit'], function (ember_qunit) {
-
-  'use strict';
-
-  ember_qunit.moduleForComponent("form-field", "FormFieldComponent", {});
-
-  ember_qunit.test("it renders", function () {
-    expect(2);
-
-    // creates the component instance
-    var component = this.subject();
-    equal(component._state, "preRender");
-
-    // appends the component to the page
-    this.append();
-    equal(component._state, "inDOM");
-  });
-  // specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
-
-});
 define('master-plan-app/tests/unit/components/foundation-row-wrapper-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -1937,6 +2383,132 @@ define('master-plan-app/tests/unit/components/learn-section-test', ['ember-qunit
   // needs: ['component:foo', 'helper:bar']
 
 });
+define('master-plan-app/tests/unit/components/map-container-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("map-container", "MapContainerComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/components/map-filter-bar-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("map-filter-bar", "MapFilterBarComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/components/map-filter-left-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("map-filter-left", "MapFilterLeftComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/components/map-filter-right-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("map-filter-right", "MapFilterRightComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/components/map-title-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("map-title", "MapTitleComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/components/signup-modal-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForComponent("signup-modal", "SignupModalComponent", {});
+
+  ember_qunit.test("it renders", function () {
+    expect(2);
+
+    // creates the component instance
+    var component = this.subject();
+    equal(component._state, "preRender");
+
+    // appends the component to the page
+    this.append();
+    equal(component._state, "inDOM");
+  });
+  // specify the other units that are required for this test
+  // needs: ['component:foo', 'helper:bar']
+
+});
 define('master-plan-app/tests/unit/components/team-section-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -1977,6 +2549,21 @@ define('master-plan-app/tests/unit/components/user-info-test', ['ember-qunit'], 
   });
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
+
+});
+define('master-plan-app/tests/unit/controllers/events-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("controller:events", "EventsController", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function () {
+    var controller = this.subject();
+    ok(controller);
+  });
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
 
 });
 define('master-plan-app/tests/unit/controllers/users/new-test', ['ember-qunit'], function (ember_qunit) {
@@ -2084,11 +2671,39 @@ define('master-plan-app/tests/unit/routes/index-test', ['ember-qunit'], function
   // needs: ['controller:foo']
 
 });
-define('master-plan-app/tests/unit/routes/itinerary-test', ['ember-qunit'], function (ember_qunit) {
+define('master-plan-app/tests/unit/routes/itineraries-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
 
-  ember_qunit.moduleFor("route:itinerary", "ItineraryRoute", {});
+  ember_qunit.moduleFor("route:itineraries", "ItinerariesRoute", {});
+
+  ember_qunit.test("it exists", function () {
+    var route = this.subject();
+    ok(route);
+  });
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('master-plan-app/tests/unit/routes/itineraries/itinerary-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:itineraries/itinerary", "ItinerariesItineraryRoute", {});
+
+  ember_qunit.test("it exists", function () {
+    var route = this.subject();
+    ok(route);
+  });
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('master-plan-app/tests/unit/routes/itineraries/new-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:itineraries/new", "ItinerariesNewRoute", {});
 
   ember_qunit.test("it exists", function () {
     var route = this.subject();
