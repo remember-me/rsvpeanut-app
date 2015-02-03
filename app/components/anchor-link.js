@@ -4,7 +4,8 @@ export default Ember.Component.extend({
   tagName: 'a',
 
   attributeBindings: ['hrefAnchorTag:href',
-    'customModal:data-reveal-id'],
+    'customModal:data-reveal-id',
+    'id'],
 
 
   customModal: function() {

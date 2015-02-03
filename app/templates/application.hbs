@@ -2,19 +2,25 @@
   <div class="logo-section"> 
 
     {{#link-to "index"}}
-      <img src="assets/images/peanutlogo.png" class="peanutlogo"></img>
+      <img src="assets/images/simpletext2.png" class="peanutlogo"></img>
     {{/link-to}}
 
     <div class="nav-buttons">
-      {{#link-to 'events' class="button radius signin-button" }}EVENTS{{/link-to}}
-      {{#anchor-link class="button radius signin-button" 
+      {{#link-to 'events' class="events" }}EVENTS{{/link-to}}
+      {{#anchor-link class="events" 
       customHref='team'}}TEAM{{/anchor-link}}
-      {{#link-to 'users'  class="button radius signin-button" }}SIGN IN{{/link-to}}
-      {{#anchor-link class="button radius signin-button" modal="signup"}}SIGN UP{{/anchor-link}}
+      {{#link-to 'users'  class="events" }}SIGN IN{{/link-to}}
+      {{#anchor-link class="events" modal="signup"}}SIGN UP{{/anchor-link}}
       {{signup-modal}}
     </div>
 
   </div>
 {{/fixed-nav-bar}}
 
+
+
 {{outlet}}
+
+{{footer-wrap}}
+
+

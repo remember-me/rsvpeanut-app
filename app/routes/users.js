@@ -7,13 +7,13 @@ export default Ember.Route.extend({
 
   setupController: function (controller, model) {
     controller.set('users', model.content);
-  },
-
-  renderTemplate: function () {
-    this._super();
-    this.render('users/new', {
-      into: 'users',
-      controller: 'users.new'
-    });
   }
+
+  // renderTemplate: function () {
+  //   this._super();
+  //   this.render('users/new', {
+  //     into: 'users',
+  //     controller: 'users.new'
+  //   });
+  // }
 });
