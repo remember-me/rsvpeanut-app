@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
 
   dropMarkers: function() {
+    debugger;
     var events = this.get('events.content');
     var map = this.get('map');
     events.forEach( function(event){
