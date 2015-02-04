@@ -27,3 +27,5 @@ export default Ember.Component.extend({
   }.property('baseImageUrl')
 
 });
+
+  
