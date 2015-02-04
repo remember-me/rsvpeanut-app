@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import TextField from '../overrides/textfield';
 
 export default Ember.Component.extend({
   classNames: ['filter-section'],
