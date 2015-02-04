@@ -21,6 +21,14 @@ export default Ember.Route.extend({
       .catch(function(){
         alert('Failed to request Events for ' + location + '!');
       });
+      // store.find('event', query)
+      // .then(()=>{
+      //   this.set("model", result);
+      //   alert('Requested Events for ' + location + '!');
+      // })
+      // .catch(function(){
+      //   alert('Failed to request Events for ' + location + '!');
+      // });
     }
   }
 });

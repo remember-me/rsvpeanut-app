@@ -4,17 +4,19 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['map'],
 
-  map: {},
+  map: null,
+
+  events: null,
 
   setup: function() {
     L.mapbox.accessToken = 'pk.eyJ1IjoiYWZvcmQiLCJhIjoiZ2RNeFNBMCJ9.Cv94HqHAWfhIuE6vx7QMlw';
     var map = L.mapbox.map('map', 'aford.l4a1dfc2');
     this.set('map', map);
+    this.dropMarkers()
   }.on('didInsertElement'),
 
   dropMarkers: function() {
-    debugger;
-    var events = this.get('events.content');
+    var events = this.get('events');
     var map = this.get('map');
     events.forEach( function(event){
       var lat = parseFloat(event.get('lat'));
@@ -23,6 +25,6 @@ export default Ember.Component.extend({
         L.marker([lat, long]).addTo(map);
       }
     });
-  }.observes('events.@each')
+  }
   
 });
