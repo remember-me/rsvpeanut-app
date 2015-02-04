@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import mapEvents from '../data/data';
 
 export default Ember.Controller.extend({
 
@@ -9,47 +8,49 @@ export default Ember.Controller.extend({
 
   dates: function() {
     var currentDate = new Date();
-    var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+    var nextWeek = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
     return { start: currentDate, end: nextWeek };
-  }.on('didInsertElement'),
-
-  filterPopularity: function(elements) {
-    // var currentDate = new Date();
-    // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-    // return { start: currentDate, end: nextWeek }
-    debugger;
-    return elements;
   },
 
-  filterDates: function(elements) {
-    // var currentDate = new Date();
-    // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-    // return { start: currentDate, end: nextWeek }
-    debugger;
-    return elements;
+  filterPopularity: function(contents) {
+    if (this.get('isPopular')) {
+      return contents.filter(function(content){
+        return content.get('attendees') >= 30
+      })
+    } else {
+      return contents
+    }
   },
 
-  filterCatagories: function(elements) {
+  filterDates: function(contents) {
     // var currentDate = new Date();
     // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
     // return { start: currentDate, end: nextWeek }
     debugger;
-    return elements;
+    return contents.filter(function(content){
+      return content.get('attendees') >= 20
+    })
+  },
+
+  filterCatagories: function(contents) {
+    // var currentDate = new Date();
+    // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
+    // return { start: currentDate, end: nextWeek }
+    debugger;
+    return contents.filter(function(content){
+      return content.get('attendees') >= 20
+    })
   },
 
   // I have to decalre computed property to get events
   filteredEvents: function () {
-    var filteredEvents = { events: [] }
-    // This is where I put the filtered Functions
     debugger;
-    var events = this.get('model.content.events');
-    debugger;
-    events = filterCatagories(events);
-    events = filterDates(events);
-    events = filterPopularity(events);
-    return events;
-  //}.property('model.@each'),
-  }.on('didInsertElement'),
+    var filteredEvents = this.get('model.content');
+    //filteredEvents = filterCatagories(filteredEvents);
+    //filteredEvents = filterDates(filteredEvents);
+    filteredEvents = this.filterPopularity(filteredEvents);
+    return filteredEvents;
+  }.property('model.@each', 'isPopular', 'catagories', 'dates'),
 
   actions: {
     setCatagory: function(cats) {
@@ -62,10 +63,6 @@ export default Ember.Controller.extend({
       var endDate = date.end;
       debugger;
       // this.set('dates', {start: startDate, end: endDate})
-    },
-    setPopularity: function(){
-      debugger;
-      this.toggleProperty('isPopular');
     },
   }
 
