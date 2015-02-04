@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    tagName: ['section'],
+    tagName: ['div'],
     classNames: ['team-section'],
 
     attributeBindings: ['team:id'],
@@ -11,27 +11,31 @@ export default Ember.Component.extend({
     teamMembers: [ {
       "id": 1,
       "name": "Alex Ford",
-      "role": "Front-End",
-      "img": 'assets/images/alex.jpg'
+      "title": "Front-End",
+      "img": 'assets/images/alex.jpg',
+      "linkedin": "assets/images/personallinkedin.png",
+      "github": "assets/images/personalgithub.png",
+      "twitter": "assets/images/personaltwitter.png"
     }, {
       "id": 2,
       "name": "Jessica Meyer",
-      "role":  "Front-End",
+      "title":  "Front-End",
       "img": 'assets/images/jessica.jpg'
     }, {
       "id": 3,
       "name": "John Goldsmith",
-      "role":  "Back-End",
+      "title":  "Back-End",
       "img": 'assets/images/john.jpg'
     }, {
       "id": 4,
       "name": "Melizza Patterson",
-      "role": "Back-End",
+      "title": "Back-End",
       "img": 'assets/images/melissa.jpeg'
     }, {
       "id": 5,
       "name": "Spenser Filler",
-      "role":  "Back-End",
+      "title":  "Back-End",
       "img": 'assets/images/spenser.jpeg'
     }]
 });
+
