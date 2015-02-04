@@ -2,15 +2,14 @@
   <div class="logo-section"> 
 
     {{#link-to "index"}}
-      <img src="assets/images/simpletext2.png" class="peanutlogo"></img>
+      <img src="assets/images/simpletext2.png" class="logo-image"></img>
     {{/link-to}}
 
     <div class="nav-buttons">
-      {{#link-to 'events' class="events" }}EVENTS{{/link-to}}
-      {{#anchor-link class="events" 
-      customHref='team'}}TEAM{{/anchor-link}}
-      {{#link-to 'users'  class="events" }}SIGN IN{{/link-to}}
-      {{#anchor-link class="events" modal="signup"}}SIGN UP{{/anchor-link}}
+      {{#link-to 'events' class="events" }}Events{{/link-to}}
+      {{#anchor-link class="events" customHref='team'}}Team{{/anchor-link}}
+      {{#link-to 'users'  class="events" id="signinbutton" }}Sign In{{/link-to}}
+      {{#anchor-link class="events" id="signinbutton" modal="signup"}}Sign Up{{/anchor-link}}
       {{signup-modal}}
     </div>
 
@@ -22,3 +21,4 @@
 {{footer-wrap}}
 
 
+ 
