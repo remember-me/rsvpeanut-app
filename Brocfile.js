@@ -1,6 +1,7 @@
 /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({
   'ember-cli-foundation-sass': {
@@ -12,8 +13,23 @@ var app = new EmberApp({
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
-  
-// app.import("bower_components/foundation/css/normalize.css");
+
+
+app.import('bower_components/mapbox.js/mapbox.js', {
+   exports: {
+     'mapBox.js': [
+       'L',
+     ]
+   }
+});
+
+app.import("bower_components/mapbox.js/mapbox.css");
+
+var extraAssets = pickFiles('bower_components/mapbox.js/images', {
+  srcDir: '/',
+  files: ['icons-*', 'layers-*', 'marker-*'],
+  destDir: '/assets/images'
+});
 
 // If you need to use different assets in different
 // environments, specify an object as the first parameter. That
@@ -25,4 +41,4 @@ var app = new EmberApp({
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
-module.exports = app.toTree();
+module.exports = app.toTree(extraAssets);
