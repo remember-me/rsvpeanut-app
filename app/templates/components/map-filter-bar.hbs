@@ -1,4 +1,5 @@
 <!--map search, date, popular event toggle row-->
+
 <div class="row">
   <div class="filter-row">
     <div class="large-1 columns"></div>
@@ -17,17 +18,18 @@
       </div>
     </div>
     <div class="large-3 columns">
-      <div class="calendar">
+      <div class="calendar" id="firstStop">
         <div class="panel" {{action 'selectDate'}}>
           {{input value=startDate class="span2" data-date-format="mm/dd/yy" id="dp2" placeholder="Choose Start Date"}}
         </div>
       </div>
     </div>
-    <div class="large-3 columns">
-      <div class="panel">
-        <div class="switch">
+    <div class="large-5 columns">
+      <div class="panel" id="switch-panel">
+        <div class="switch" id="numero1">
           {{input checked=isPopularToggled id="exampleCheckboxSwitch" type="checkbox"}}
           <label for="exampleCheckboxSwitch"></label>
+          <p class="switch-text" id="switch-text2">  Popular Events </p>
         </div>
       </div>
     </div>
