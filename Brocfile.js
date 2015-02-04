@@ -14,11 +14,10 @@ var app = new EmberApp({
 // Use `app.import` to add additional libraries to the generated
 // output files.
 
-
 app.import('bower_components/mapbox.js/mapbox.js', {
    exports: {
      'mapBox.js': [
-       'L',
+       'L'
      ]
    }
 });

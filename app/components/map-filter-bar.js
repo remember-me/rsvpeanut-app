@@ -5,6 +5,8 @@ export default Ember.Component.extend({
 
   attributeBindings: ['id'],
 
+  isPopularToggled: false,
+
   id: "filter-section",
 
   actions: {
@@ -13,6 +15,7 @@ export default Ember.Component.extend({
       console.log(query);
       this.sendAction('search', {location: query} );
     },
+
   }
 
 });

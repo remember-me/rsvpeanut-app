@@ -4,14 +4,15 @@
 <!-- Display Map -->
 <div class="row" id="map-container">
   <!-- Display Top Horizantal Map Filters -->
-  {{map-filter-bar searchTitle="Search" search="search"}}
+  <!--                             | compAct = "CtrlAct" compAttr = CtrlAttr-->
+  {{map-filter-bar searchTitle="Search" search="search" isPopularToggled=isPopularFilter}}
   <div class="large-1 columns">
     <!-- Display Left Vertical Map Filters -->
     {{map-filter-left}}
   </div>
   <div class="large-10 columns">
     <!-- Display Map -->
-    {{map-container}}
+    {{map-container events=filteredEvents}}
   </div>
   <div class="large-1 columns">
     <!-- Display Right Vertical Map Filters -->

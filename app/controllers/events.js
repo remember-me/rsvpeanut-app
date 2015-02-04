@@ -1,18 +1,18 @@
 import Ember from 'ember';
+import mapEvents from '../data/data';
 
 export default Ember.Controller.extend({
+
+  isPopularFilter: false,
+
+  // I have to decalre computed property to get events
+  filteredEvents: function () {
+    // This is where I put the filtered Functions
+    return this.get('model');
+  }.property('model.@each'),
+
   actions: {
-    search: function(query){
-      var store = this.store;
-      var location = query.location;
-      store.find('event', query)
-      .then(function(){
-        alert('Requested Events for ' + location + '!');
-      })
-      .catch(function(){
-        alert('Failed to request Events for ' + location + '!');
-      });
-    },
+    
   }
 });
 
