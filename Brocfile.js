@@ -24,6 +24,10 @@ app.import('bower_components/mapbox.js/mapbox.js', {
 
 app.import("bower_components/mapbox.js/mapbox.css");
 
+app.options.inlineContent = {
+  "googleFonts": "vendor/googleFonts.html"
+}
+
 var extraAssets = pickFiles('bower_components/mapbox.js/images', {
   srcDir: '/',
   files: ['icons-*', 'layers-*', 'marker-*'],
