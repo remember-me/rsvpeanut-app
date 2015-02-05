@@ -1,12 +1,97 @@
-<!--filter-left-->
-<div class="icon-bar large-vertical four-up">
-  <a class="item">
-    <img src="assets/images/smallfilter.png" >
-    <label>Filter</label>
-  </a>
-  <a class="item">
-    <img src="assets/images/smallinfo.png" >
-    <label>Info</label>
-  </a>
+<!--map filter left-->
+
+<div class="row">
+  <div class="filter-left">
+    <div class="large-4 columns">
+      <div class="icon-bar large-vertical four-up">
+ 
+	  <a data-dropdown="drop2" aria-controls="drop2" aria-expanded="false" class="item" id="numero2"> 
+        <img src="assets/images/smallnew.png" >
+          <label>Create</label>
+      </a>
+        
+      <div id="drop2" data-dropdown-content class="f-dropdown content" aria-hidden="true" tabindex="-1">
+          <form>
+            <div class="row">
+              <div class="large-12 columns">
+                  <input type="text" placeholder="Austin, TX" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns">
+                  <input type="text" placeholder="Select Date" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns">
+                  <input type="text" placeholder="Select Event Type" />
+              </div>
+            </div>
+             <div class="row">
+              <div class="large-12 columns">
+                  <input type="text" placeholder="Plan Name" />
+              </div>
+            </div>
+             <div class="row">
+              <div class="large-12 columns">
+                  <input type="text" placeholder="Description" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-12 columns">
+            <a href="#" class="tiny button"> Create Plan </a>  
+          </div>
+        </div>
+        </form>
+      </div> 
+
+
+	    <a data-dropdown="drop4" aria-controls="drop4" aria-expanded="false" class="item" id="numero3"> 
+        <img src="assets/images/smallfilter.png" >
+          <label>Filter</label>
+      </a>
+        
+     <div id="drop4" data-dropdown-content class="f-dropdown content" aria-hidden="true" tabindex="-1">
+   
+      <p>Music</p>
+        <div class="switch round tiny">
+        <input id="exampleRadioSwitch2" type="radio" name="testGroup">
+        <label for="exampleRadioSwitch2"></label>
+      </div>
+     
+      <p>Food</p>
+        <div class="switch round tiny">
+        <input id="exampleRadioSwitch3" type="radio" name="testGroup">
+        <label for="exampleRadioSwitch3"></label>
+      </div>
+
+      <p>Meetups</p>
+        <div class="switch round tiny">
+        <input id="exampleRadioSwitch4" type="radio" name="testGroup">
+        <label for="exampleRadioSwitch4"></label>
+      </div>
+     </div>
+
+      
+      <a class="item">
+        <img src="assets/images/smallinfo.png" >
+        <label>Info</label>
+      </a>
+
+
+      <a data-dropdown="drop3" aria-controls="drop3" aria-expanded="false" class="item" id="numero4"> 
+        <img src="assets/images/smallplan.png" >
+          <label>Plans</label>
+      </a>
+        
+      <div id="drop3" data-dropdown-content class="f-dropdown content" aria-hidden="true" tabindex="-1">
+        
+      </div>
+
+
+  </div>
 </div>
+</div>
+
+
 {{yield}}
