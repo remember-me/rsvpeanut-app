@@ -21,7 +21,7 @@ export default Ember.Component.extend({
 
     selectDate: function() {
       // TODO - update the start date and end date
-      debugger
+      debugger;
       var start = new Date(this.get('startDate'));
       var end   = new Date(this.get('endDate'));
       this.sendAction('updateDates', {start: start, end: end});

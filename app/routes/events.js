@@ -10,15 +10,17 @@ export default Ember.Route.extend({
 
   actions: {
     search: function(query){
-      var _this = this;
       var store = this.store;
-      var location = query.address;
+      // THE BELOW IS EQUIVALENT BUT SLOWER
+      var _this = this;
       store.find('event', query)
       .then(function(result){
         _this.set("model", result);
+        var location = query.address;
         alert('Requested Events for ' + location + '!');
       })
       .catch(function(){
+        var location = query.address;
         alert('Failed to request Events for ' + location + '!');
       });
       // store.find('event', query)

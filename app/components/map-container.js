@@ -16,6 +16,7 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
 
   dropMarkers: function() {
+    debugger;
     var events = this.get('events');
     var map = this.get('map');
     events.forEach( function(event){
@@ -25,6 +26,6 @@ export default Ember.Component.extend({
         L.marker([lat, long]).addTo(map);
       }
     });
-  }
+  }.observes('@events.@each'),
   
 });
