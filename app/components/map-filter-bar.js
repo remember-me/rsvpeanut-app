@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     buildQuery: function() {
       var query = this.get('location');
       console.log(query);
-      this.sendAction('search', {location: query} );
+      this.sendAction('search', {address: query} );
     },
 
   }

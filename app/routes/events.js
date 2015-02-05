@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     search: function(query){
       var _this = this;
       var store = this.store;
-      var location = query.location;
+      var location = query.address;
       store.find('event', query)
       .then(function(result){
         _this.set("model", result);

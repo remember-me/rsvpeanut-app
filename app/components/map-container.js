@@ -18,7 +18,9 @@ export default Ember.Component.extend({
     events.forEach( function(event){
       var lat = parseFloat(event.get('lat'));
       var long = parseFloat(event.get('long'));
-      L.marker([lat, long]).addTo(map);
+      if( lat && long ){
+        L.marker([lat, long]).addTo(map);
+      }
     });
   }.observes('events.@each')
   
