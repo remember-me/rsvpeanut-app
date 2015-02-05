@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   //   category_name: selected (boolean)
   // }
   categories: function() {
-    var events = this.get('model.content');
+    var events = this.get('model');
     var eventTypes = events
     .map( function(event) {
       return event.get('event_type');
@@ -71,12 +71,14 @@ export default Ember.Controller.extend({
 
   // I have to decalre computed property to get events
   filteredEvents: function () {
-    var filteredEvents = this.get('model.content');
-    //filteredEvents = this.filterCategories(filteredEvents);
-    filteredEvents = this.filterDates(filteredEvents);
-    filteredEvents = this.filterPopularity(filteredEvents);
+    var filteredEvents = this.get('model');
+    if (filteredEvents) { 
+      //filteredEvents = this.filterCategories(filteredEvents);
+      //filteredEvents = this.filterDates(filteredEvents);
+      filteredEvents = this.filterPopularity(filteredEvents);
+    }
     return filteredEvents;
-  }.property('model.@each', 'isPopular', 'categories', 'dates'),
+  }.property('model', 'isPopular', 'categories', 'dates'),
 
   actions: {
     updateDates: function(dates) {
