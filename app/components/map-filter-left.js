@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['filter-vertical-left'],
+  tagName: ['div'],
+  attributeBindings: ['id']
 
   actions: {
     selectCategory: function() {
@@ -14,3 +15,4 @@ export default Ember.Component.extend({
   }
 
 });
+
