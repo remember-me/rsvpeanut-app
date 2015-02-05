@@ -15,8 +15,8 @@ export default Ember.Component.extend({
   dropMarkers: function() {
     var events = this.get('events');
     var map = this.get('map');
-    console.log("Droping " + events.length + " Events!");
-    this.removeLayer();
+    
+    // Build All Pin Markers for this new layer
     var markers = [];
     events.forEach( function(event){
       var lat = parseFloat(event.get('lat'));
@@ -25,16 +25,20 @@ export default Ember.Component.extend({
         markers.push(L.marker([lat, long]));
       }
     });
-    var points = L.layerGroup(markers);
-    this.set('layer', points);
-    points.addTo(map);
+
+    console.log("Droping " + events.length + " Events!");
+
+    var newLayer = L.layerGroup(markers); // Get new Current Layer of markers
+    this.removeLayer();                   // Remove Previous Filtered Layer
+    newLayer.addTo(map);                  // Add Filtered Layer to Map
+    this.set('layer', newLayer);          // Set New Layer in Controller 
   }.observes('events.@each'),
 
   removeLayer: function() {
-    var layer = this.get('layer');
+    var currentLayer = this.get('layer');
     var map = this.get('map');
-    if (layer) {
-      map.removeLayer(layer);
+    if (currentLayer) {
+      map.removeLayer(currentLayer);
     }
   }
 });
