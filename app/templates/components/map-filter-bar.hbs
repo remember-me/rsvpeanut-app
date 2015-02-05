@@ -2,29 +2,29 @@
 
 <div class="row">
   <div class="filter-row">
-    <div class="large-1 columns"></div>
-    <div class="large-4 columns">
+    <div {{bind-attr class=":large-1 :columns"}} ></div>
+    <div {{bind-attr class=":large-4 :columns" }}>
       <div class="panel" id="search-panel">
         <li class="has-form" id="search-row">
           <div class="row collapse">
-            <div class="large-8 small-9 columns">
+            <div {{bind-attr class=":large-8 :small-9 :columns"}}>
               {{input value=location class="search" placeholder="Enter City or Zip"}}
             </div>
-            <div class="large-4 small-3 columns">
+            <div {{bind-attr class=":large-4 :small-3 :columns"}}>
               <button class="button small" id="submit-button" type="submit" {{action 'buildQuery'}}>{{searchTitle}}</button>
             </div>
           </div>
         </li>
       </div>
     </div>
-    <div class="large-3 columns">
+    <div {{bind-attr class=":large-3 :columns"}}>
       <div class="calendar" id="firstStop">
         <div class="panel" {{action 'selectDate'}}>
           {{input value=startDate class="span2" data-date-format="mm/dd/yy" id="dp2" placeholder="Choose Start Date"}}
         </div>
       </div>
     </div>
-    <div class="large-5 columns">
+    <div {{bind-attr class=":large-5 :columns"}}>
       <div class="panel" id="switch-panel">
         <div class="switch" id="numero1">
           {{input checked=isPopularToggled id="exampleCheckboxSwitch" type="checkbox"}}

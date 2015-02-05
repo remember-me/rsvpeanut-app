@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: ['div'],
-  attributeBindings: ['id']
+  attributeBindings: ['id'],
+  classNames: ['map-container'],
 
   actions: {
     selectCategory: function() {
@@ -12,7 +13,15 @@ export default Ember.Component.extend({
       this.sendAction('updateCategories', categories);
     },
 
-  }
+  },
 
+
+  didInsertElement: function() {
+    this.$().foundation(); //or Ember.$(document).foundation();
+  }
 });
+
+
+
+
 

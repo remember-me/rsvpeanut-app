@@ -4,10 +4,10 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var pickFiles = require('broccoli-static-compiler');
 
 var app = new EmberApp({
-  'ember-cli-foundation-sass': {
+    'ember-cli-foundation-sass': {
     'modernizr': true,
     'fastclick': true,
-    'foundationJs': 'all'
+    'foundationJs': ['tab', 'topbar', 'orbit', 'dropdown']
   }
 });
 
@@ -28,8 +28,6 @@ app.options.inlineContent = {
   "googleFonts": "vendor/googleFonts.html"
 }
 
-app.import("bower_components/foundation/js/foundation/foundation.joyride.js");
-app.import("bower_components/foundation/js/vendor/jquery.cookie.js");
 
 var extraAssets = pickFiles('bower_components/mapbox.js/images', {
   srcDir: '/',
