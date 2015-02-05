@@ -28,6 +28,9 @@ app.options.inlineContent = {
   "googleFonts": "vendor/googleFonts.html"
 }
 
+app.import("bower_components/foundation/js/foundation/foundation.joyride.js");
+app.import("bower_components/foundation/js/vendor/jquery.cookie.js");
+
 var extraAssets = pickFiles('bower_components/mapbox.js/images', {
   srcDir: '/',
   files: ['icons-*', 'layers-*', 'marker-*'],
