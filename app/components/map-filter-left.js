@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   didInsertElement: function() {
     this.$().foundation(); //or Ember.$(document).foundation();
   }
+
 });
 
 

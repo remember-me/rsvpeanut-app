@@ -73,11 +73,11 @@
      </div>
 
       <!-- if click on this button, display joyride-->
-      <a class="item">
-        <img src="assets/images/smallinfo.png" >
+  
+      <a class="item" id="info-button" {{action "joyRide" 'start'}}>
+        <img src="assets/images/smallinfo.png">
         <label>Info</label>
       </a>
-
 
       <a data-dropdown="drop3" aria-controls="drop3" aria-expanded="false" class="item" id="numero4"> 
         <img src="assets/images/smallplan.png" >
@@ -90,6 +90,7 @@
     </div>
   </div>
 </div>
+
 
 
 {{yield}}
