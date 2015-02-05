@@ -41,44 +41,45 @@ export default Ember.Controller.extend({
   popularCnt: 30,
 
   // If isPopular is true, select only 
-  filterPopularity: function(contents) {
+  filterPopularity: function(events) {
     var minPopularCount = this.get('popularCnt');
     if (this.get('isPopular')) {
-      return contents.filter(function(content){
-        return content.get('attendees') >= minPopularCount;
+      return events.filter(function(event){
+        return event.get('attendees') >= minPopularCount;
       });
     } else {
-      return contents;
+      return events;
     }
   },
 
-  filterDates: function(contents) {
+  filterDates: function(events) {
     // TODO - Test startDate and endDate and make sure they are UTC format
     var dates = this.get('dates');
-    return contents.filter(function(content){
-      var start = new Date(content.get('utc_start'));
-      var end   = new Date(content.get('utc_start'));
+    return events.filter(function(event){
+      var start = new Date(event.get('utc_start'));
+      var end   = new Date(event.get('utc_start'));
       return dates.utcStartDate <= start && dates.utcEndDate >= end;
     });
   },
 
-  filterCategories: function(contents) {
+  filterCategories: function(events) {
     var categories = this.get('categories');
-    return contents.filter(function(content){
-      return categories[content.get('event_type')];
+    return events.filter(function(event){
+      return categories[event.get('event_type')];
     });
   },
 
   // I have to decalre computed property to get events
   filteredEvents: function () {
-    var filteredEvents = this.get('model');
-    if (filteredEvents) { 
-      //filteredEvents = this.filterCategories(filteredEvents);
-      //filteredEvents = this.filterDates(filteredEvents);
+    var filteredEvents = this.get('model.content');
+    if (filteredEvents) {
+      filteredEvents = this.filterCategories(filteredEvents);
+      filteredEvents = this.filterDates(filteredEvents);
       filteredEvents = this.filterPopularity(filteredEvents);
     }
     return filteredEvents;
   }.property('model', 'isPopular', 'categories', 'dates'),
+  // }.property('model.@each'),
 
   actions: {
     updateDates: function(dates) {

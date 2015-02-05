@@ -13,15 +13,28 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
 
   dropMarkers: function() {
-    var events = this.get('events.content');
+    var events = this.get('events');
     var map = this.get('map');
+    console.log("Droping " + events.length + " Events!");
+    this.removeLayer();
+    var markers = [];
     events.forEach( function(event){
       var lat = parseFloat(event.get('lat'));
       var long = parseFloat(event.get('long'));
       if( lat && long ){
-        L.marker([lat, long]).addTo(map);
+        markers.push(L.marker([lat, long]));
       }
     });
-  }.observes('events.@each')
-  
+    var points = L.layerGroup(markers);
+    this.set('layer', points);
+    points.addTo(map);
+  }.observes('events.@each'),
+
+  removeLayer: function() {
+    var layer = this.get('layer');
+    var map = this.get('map');
+    if (layer) {
+      map.removeLayer(layer);
+    }
+  }
 });

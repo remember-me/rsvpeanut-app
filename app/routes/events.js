@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import data from '../data/data';
+// import data from '../data/data';
 
 export default Ember.Route.extend({
 
   model: function() {
-    this.store.pushPayload('event', data);
-    return this.store.all('event');
+  // this.store.pushPayload('event', data);
+     return this.store.all('event');
   },
 
   actions: {
