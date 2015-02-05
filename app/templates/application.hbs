@@ -8,8 +8,9 @@
     <div class="nav-buttons">
       {{#link-to 'events' class="events" }}Events{{/link-to}}
       {{#anchor-link class="events" customHref='team'}}Team{{/anchor-link}}
-      {{#link-to 'users' class="events"}}Sign In{{/link-to}}
+      {{#anchor-link class="events" id="signinbutton" modal="signin"}}Sign In{{/anchor-link}}
       {{#anchor-link class="events" id="signinbutton" modal="signup"}}Sign Up{{/anchor-link}}
+	  {{signin-modal}}
       {{signup-modal}}
     </div>
 
