@@ -4,66 +4,90 @@ export default Ember.Controller.extend({
 
   isPopular: false,
 
-  catagories: {valid: []},
+  // categories = {
+  //   category_name: selected (boolean),
+  //   ...
+  //   category_name: selected (boolean)
+  // }
+  categories: function() {
+    var events = this.get('model.content');
+    var eventTypes = events
+    .map( function(event) {
+      return event.get('event_type');
+    })
+    .filter( function(type,idx,a){
+      return idx === a.indexOf(type);
+    });
 
+    var categories = {};
+    eventTypes.forEach(function(type) {
+      categories[type] = true;
+    });
+
+    return categories;
+    
+  }.property('model.@each'),
+
+  // dates = {
+  //   utcStartDate: "start" (UTC Date - String),
+  //   utcEndDate:   "end"   (UTC Date - String)
+  // }
   dates: function() {
     var currentDate = new Date();
     var nextWeek = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-    return { start: currentDate, end: nextWeek };
-  },
+    return { utcStartDate: currentDate, utcEndDate: nextWeek };
+  }.property('model.@each'),
 
+  popularCnt: 30,
+
+  // If isPopular is true, select only 
   filterPopularity: function(contents) {
+    var minPopularCount = this.get('popularCnt');
     if (this.get('isPopular')) {
       return contents.filter(function(content){
-        return content.get('attendees') >= 30
-      })
+        return content.get('attendees') >= minPopularCount;
+      });
     } else {
-      return contents
+      return contents;
     }
   },
 
   filterDates: function(contents) {
-    // var currentDate = new Date();
-    // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-    // return { start: currentDate, end: nextWeek }
-    debugger;
+    // TODO - Test startDate and endDate and make sure they are UTC format
+    var dates = this.get('dates');
     return contents.filter(function(content){
-      return content.get('attendees') >= 20
-    })
+      var start = new Date(content.get('utc_start'));
+      var end   = new Date(content.get('utc_start'));
+      return dates.utcStartDate <= start && dates.utcEndDate >= end;
+    });
   },
 
-  filterCatagories: function(contents) {
-    // var currentDate = new Date();
-    // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
-    // return { start: currentDate, end: nextWeek }
-    debugger;
+  filterCategories: function(contents) {
+    var categories = this.get('categories');
     return contents.filter(function(content){
-      return content.get('attendees') >= 20
-    })
+      return categories[content.get('event_type')];
+    });
   },
 
   // I have to decalre computed property to get events
   filteredEvents: function () {
-    debugger;
     var filteredEvents = this.get('model.content');
-    //filteredEvents = filterCatagories(filteredEvents);
-    //filteredEvents = filterDates(filteredEvents);
+    //filteredEvents = this.filterCategories(filteredEvents);
+    filteredEvents = this.filterDates(filteredEvents);
     filteredEvents = this.filterPopularity(filteredEvents);
     return filteredEvents;
-  }.property('model.@each', 'isPopular', 'catagories', 'dates'),
+  }.property('model.@each', 'isPopular', 'categories', 'dates'),
 
   actions: {
-    setCatagory: function(cats) {
-      var catagories = cats;
+    updateDates: function(dates) {
       debugger;
-      // this.set('catagories', {valid: catagories} )
+      this.set('dates', {utcStartDate: dates.start, utcEndDate: dates.end});
     },
-    setDate: function(date) {
-      var startDate = date.start;
-      var endDate = date.end;
+
+    updateCategories: function(categories) {
       debugger;
-      // this.set('dates', {start: startDate, end: endDate})
-    },
+      this.set('categories', categories);
+    }
   }
 
 

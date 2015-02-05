@@ -8,14 +8,9 @@ export default Ember.Component.extend({
 
   isPopularToggled: false,
 
-  id: "filter-section",
+  dateRange: null,
 
-  dateRange: function() {
-    var start = this.get('startDate');
-    var end = this.get('endDate');
-    console.log("dateRange: " + start + " - " + end);
-    this.sendAction('', {address: query} );
-  },
+  id: "filter-section",
 
   actions: {
     buildQuery: function() {
@@ -23,6 +18,14 @@ export default Ember.Component.extend({
       console.log(query);
       this.sendAction('search', {address: query} );
     },
+
+    selectDate: function() {
+      // TODO - update the start date and end date
+      debugger
+      var start = new Date(this.get('startDate'));
+      var end   = new Date(this.get('endDate'));
+      this.sendAction('updateDates', {start: start, end: end});
+    }
   }
 
 });

@@ -10,7 +10,11 @@ export default DS.Model.extend({
   long: DS.attr('number'),
   name: DS.attr('string'),
   source: DS.attr('string'),
+  date_start: DS.attr('date'),
+  date_end: DS.attr('date'),
+  time_start: DS.attr('date'),
+  time_end: DS.attr('date'),
   utc_start: DS.attr('date'),
   utc_end: DS.attr('date'),
-  // venue: DS.attr('string')
+  venue: DS.attr('string')
 });

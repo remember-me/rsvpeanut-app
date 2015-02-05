@@ -4,11 +4,11 @@
 <!-- Display Map -->
 <div class="row" id="map-container">
   <!-- Display Top Horizantal Map Filters -->
-  <!--                             | compAct = "CtrlAct" compAttr = CtrlAttr-->
-  {{map-filter-bar searchTitle="Search" search="search" dateRange="dateRange" isPopularToggled=isPopular}}
+  <!--                             | compAct = "CtrlAct" compAttr = CtrlAttr | -->
+  {{map-filter-bar searchTitle="Search" search="search" selectDate="updateDates" isPopularToggled=isPopular dateRange=dates}}
   <div class="large-1 columns">
     <!-- Display Left Vertical Map Filters -->
-    {{map-filter-left}}
+    {{map-filter-left selectCategory="updateCategories"}}
   </div>
   <div class="large-10 columns">
     <!-- Display Map -->
