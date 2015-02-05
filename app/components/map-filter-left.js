@@ -4,11 +4,11 @@ export default Ember.Component.extend({
   classNames: ['filter-vertical-left'],
 
   actions: {
-    filterByCatagory: function() {
-      var catagories = this.get('catagories');
+    selectCategory: function() {
+      // TODO - update the start date and end date
       debugger;
-      console.log(catagories);
-      this.sendAction('validCatagory', {catagories: catagories} );
+      var categories = this.get('categories');
+      this.sendAction('updateCategories', categories);
     },
 
   }
