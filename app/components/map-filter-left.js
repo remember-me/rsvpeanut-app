@@ -5,16 +5,14 @@ export default Ember.Component.extend({
   attributeBindings: ['id'],
   classNames: ['map-container'],
 
+  isDisplayed: false,
+
   actions: {
-    selectCategory: function() {
-      // TODO - update the start date and end date
-      debugger;
-      var categories = this.get('categories');
-      this.sendAction('updateCategories', categories);
+    toggleBody: function(){
+      this.toggleProperty('isDisplayed');
     },
 
   },
-
 
   didInsertElement: function() {
     this.$().foundation(); //or Ember.$(document).foundation();
