@@ -23,7 +23,20 @@ export default Ember.Component.extend({
       var lat = parseFloat(event.get('lat'));
       var long = parseFloat(event.get('long'));
       if( lat && long ){
-        geojson['features'].push({"type": "Feature", "geometry": {"type": "Point","coordinates": [long,lat]}});
+        geojson['features'].push(
+          {
+            "type": "Feature", 
+            "geometry": 
+            {
+              "type": "Point",
+              "coordinates": [long,lat]
+            },
+            'properties': {
+              "title": event.get('name'),
+              'description': event.get('description'),
+              'marker-color': "#03A9F4"
+            }
+          });
       }
     });
     
