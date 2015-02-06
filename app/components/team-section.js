@@ -12,10 +12,7 @@ export default Ember.Component.extend({
       "id": 1,
       "name": "Alex Ford",
       "title": "Front-End",
-      "img": 'assets/images/alex.jpg',
-      "linkedin": "assets/images/personallinkedin.png",
-      "github": "assets/images/personalgithub.png",
-      "twitter": "assets/images/personaltwitter.png"
+      "img": 'assets/images/alex.jpg'
     }, {
       "id": 2,
       "name": "Jessica Meyer",
