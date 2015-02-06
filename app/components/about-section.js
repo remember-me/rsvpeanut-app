@@ -1,22 +1,23 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    tagName: ['section'],
+    tagName: ['div'],
     classNames: ['about-section'],
-
-    aboutImageUrl: 'http://placehold.it/400x300&text=[img]',
 
     aboutTiles:[ {
       "id": 1,
-      "text": "see all your events on a map",
-      "img": 'http://placehold.it/400x300&text=[img]'
+      "text": "create a custom plan of things to do",
+      "img": 'assets/images/create.png',
+      "attrId": "step-icon"
     }, {
       "id": 2,
       "text":  "filter your events to create a custom map",
-      "img": 'http://placehold.it/400x300&text=[img]'
+      "img": 'assets/images/filter.png',
+      "attrId": "step-icon"
     }, {
       "id": 3,
-      "text":  "view your plan",
-      "img": 'http://placehold.it/400x300&text=[img]'
+      "text":  "view your plan on a map and explore",
+      "img": 'assets/images/map.png',
+      "attrId": "step-icon"
     } ]
 });

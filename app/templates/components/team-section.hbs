@@ -1,13 +1,26 @@
-<h3 class="section-title"> Meet Our Developers </h3>
-<div class="team-pad">
+<p class="section-title"> meet our developers </hp>
+<div class="team-photos">
+
   <div class="row">
-    <div class="large-1 columns"></div>
+
+    <div {{bind-attr class=":large-12 :show-for-small :columns"}} ></div>
+
+    <div {{bind-attr class=":large-2 :columns"}} >
+       <p {{bind-attr class="teampic"}} {{bindAttr id="testimage"}}></p>
+    </div>
+
     {{#each member in teamMembers}}
-      <div class="large-2 columns">
+      <div {{bind-attr class=":large-4 :small-6 :columns"}} >
         <img {{bind-attr class= ":teampic" src="member.img"}} />
-        <p class="about-text"> {{member.role}} </p>
+        <p {{bind-attr class= ":person-name"}}> {{member.name}} </p>
+        <p {{bind-attr class= ":team-title"}} > {{member.title}} </p>
+              <img src="assets/images/personallinkedin.png" class="team-icons"/></a>
+              <img src="assets/images/personalgithub.png" class="team-icons"/></a>
+              <img src="assets/images/personaltwitter.png" class="team-icons"/></a>
       </div>
     {{/each}}
-    <div class="large-1 columns"></div>
+    <div class="large-2 columns" class"teampic"></div>
   </div>
 </div>
+
+

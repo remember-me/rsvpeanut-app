@@ -1,7 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['filter-vertical-left'],
+  tagName: ['div'],
+  attributeBindings: ['id'],
+  classNames: ['map-container'],
 
   actions: {
     selectCategory: function() {
@@ -11,6 +13,16 @@ export default Ember.Component.extend({
       this.sendAction('updateCategories', categories);
     },
 
+  },
+
+
+  didInsertElement: function() {
+    this.$().foundation(); //or Ember.$(document).foundation();
   }
 
 });
+
+
+
+
+

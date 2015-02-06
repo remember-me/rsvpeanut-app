@@ -1,13 +1,20 @@
+<!--hero section-->
+<div id="hero-image">
+  <div class="words">
+	 
+	  <h1 {{bind-attr class=":hero-title"}}> 
+		 Find Events In Your City </h1>
+	  <h3 {{bind-attr class=":hero-text"}}> 
+		 View Events On a Map. Save Your Plan. Explore. </h3>
+ </div>
 
-<h1 {{bind-attr class=":hero-title"}}>
-  Find Event In Your City </h2>
-<h3 {{bind-attr class=":hero-text"}}> 
-  View Events On a Map. Save Your Plan. Explore. </h3>
-
-<div {{bind-attr class=":hero-buttons"}} >
+<div {{bind-attr class=":hero-buttons"}}>
   {{#each button in heroButtons}}
     {{#anchor-link class=button.class id=button.attrId customHref=button.anchor}}
       {{button.content}}
     {{/anchor-link}}
   {{/each}}
+ </div>
 </div>
+
+  
