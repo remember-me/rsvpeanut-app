@@ -7,7 +7,7 @@ var app = new EmberApp({
     'ember-cli-foundation-sass': {
     'modernizr': true,
     'fastclick': true,
-    'foundationJs': ['tab', 'topbar', 'orbit', 'dropdown', 'joyride']
+    'foundationJs': ['tab', 'topbar', 'orbit', 'dropdown', 'joyride', 'reveal']
   }
 });
 

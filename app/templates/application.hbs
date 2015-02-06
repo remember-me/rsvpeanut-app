@@ -6,11 +6,11 @@
     {{/link-to}}
 
     <div class="nav-buttons">
-      {{#link-to 'events' class="events" }}Events{{/link-to}}
-      {{#anchor-link class="events" customHref='team'}}Team{{/anchor-link}}
-      {{#anchor-link class="events" id="signinbutton" modal="signin"}}Sign In{{/anchor-link}}
-      {{#anchor-link class="events" id="signinbutton" modal="signup"}}Sign Up{{/anchor-link}}
-	  {{signin-modal}}
+      {{#link-to 'events' class="team" }}Events{{/link-to}}
+      {{#anchor-link class="team" customHref='team'}}Team{{/anchor-link}}
+      {{#anchor-link class="events signinbutton" modal="signin"}}Sign In{{/anchor-link}}
+      {{#anchor-link class="events signinbutton" modal="signup"}}Sign Up{{/anchor-link}}
+      {{signin-modal}}
       {{signup-modal}}
     </div>
 
