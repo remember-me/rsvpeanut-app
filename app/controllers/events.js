@@ -26,7 +26,7 @@ export default Ember.Controller.extend({
     var categories = [];
     eventTypes.forEach(function(type) {
       categories[type] = true;
-      categories.push({name: type, selected: true})
+      categories.push({name: type, selected: true});
     });
 
     this.set('categories', categories);
@@ -69,11 +69,16 @@ export default Ember.Controller.extend({
 
   filterCategories: function(events) {
     var categories = this.get('categories');
+    events.forEach( function(event) {
+      if(!event.get('event_type')) {
+        event.set('event_type', 'Unknown');
+      }
+    });
     return events.filter(function(event){
       var category = categories.find( function(c) {
-        return event.get('event_type') === c.name
-      })
-      return category && category.selected
+        return event.get('event_type') === c.name;
+      });
+      return category && category.selected;
     });
   },
 
@@ -91,20 +96,7 @@ export default Ember.Controller.extend({
       filteredEvents = this.filterPopularity(filteredEvents);
     }
     return filteredEvents;
-  }.property('isPopular', 'categories.@each.selected', 'dates'),
-
-  actions: {
-    updateDates: function(dates) {
-      debugger;
-      this.set('dates', {utcStartDate: dates.start, utcEndDate: dates.end});
-    },
-
-    updateCategories: function(categories) {
-      debugger;
-      this.set('categories', categories);
-    }
-  }
-
+  }.property('isPopular', 'categories.@each.selected', 'dates')
 
 });
 

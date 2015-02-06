@@ -18,10 +18,24 @@ export default Ember.Component.extend({
     var geojson = { "type": "FeatureCollection", "features": [] };
     
     // Build All Pin Markers for this new layer
-//     var markers = [];
+    // var markers = [];
     events.forEach( function(event){
       var lat = parseFloat(event.get('lat'));
       var long = parseFloat(event.get('long'));
+      var description = event.get('description') || "";
+      var category = event.get('category') || "";
+
+      var title_str = event.get('name') || "";
+
+      var description_str = "";
+      if (description && category) {
+        description_str = description + "\n" + "category: " + category;
+      } else if (description) {
+        description_str = description;
+      } else if (category) {
+        description_str = "category: " + category;
+      }
+
       if( lat && long ){
         geojson['features'].push(
           {
@@ -32,8 +46,8 @@ export default Ember.Component.extend({
               "coordinates": [long,lat]
             },
             'properties': {
-              "title": event.get('name'),
-              'description': event.get('description'),
+              "title": title_str,
+              "description": description_str,
               'marker-color': "#03A9F4"
             }
           });
@@ -41,7 +55,9 @@ export default Ember.Component.extend({
     });
     
     var featureLayer = this.buildFeatureLayer(geojson);
-      
+
+    this.removeLayer();
+
     this.set('layer', featureLayer);
     
     map.fitBounds(featureLayer.getBounds());
