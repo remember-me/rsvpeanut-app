@@ -31,9 +31,13 @@ export default Ember.Component.extend({
     var newLayer = L.layerGroup(markers); // Get new Current Layer of markers
     this.removeLayer();                   // Remove Previous Filtered Layer
     newLayer.addTo(map);                  // Add Filtered Layer to Map
-    this.set('layer', newLayer);          // Set New Layer in Controller 
+/*
+    debugger;
+    map.fitBounds(newLayer.getBounds());
+*/
+    this.set('layer', newLayer);          // Set New Layer in Controller  
   }.observes('events.@each'),
-
+  
   removeLayer: function() {
     var currentLayer = this.get('layer');
     var map = this.get('map');
@@ -41,4 +45,12 @@ export default Ember.Component.extend({
       map.removeLayer(currentLayer);
     }
   }
+  
+/*
+  zoomLayer.on('dropMarkers', function() {
+    // featureLayer.getBounds() returns the corners of the furthest-out markers,
+    // and map.fitBounds() makes sure that the map contains these.
+    map.fitBounds(featureLayer.getBounds());
+  });
+*/
 });
