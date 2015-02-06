@@ -286,11 +286,6 @@
   margin-bottom: -500px;
 }*/
 
-#map-container {
-  // margin-bottom: 50px;
-  margin-bottom: 150px;
-  margin-top: -20px;
-}
 
 /* CREATE YOUR PLAN AND TEXT SECTION */
 
@@ -375,16 +370,33 @@
 
 /* MAP SECTION */
 
-.map  {
-/*  margin-left: -3px;*/
-  margin-left: -257px;
-  width: 919px;
-  margin-bottom: 50px;
+// .map  {
+// /*  margin-left: -3px;*/
+//   margin-left: -257px;
+//   width: 919px;
+//   margin-bottom: 50px;
+// }
+
+
+#map-container {
+  // margin-bottom: 50px;
+  margin-bottom: 150px;
+  margin-top: -20px;
+}
+
+#map {
+ width: 949px; 
+ // width: 118%;
+ height: 500px;
+ margin-left: -32px;
+ margin-top: -20px;
 }
 
 .filter-left {
-  margin-left: -15px;
-  height: 100px;
+  margin-left: -30px;
+  margin-top: -20px;
+  // margin-left: -15px;
+  // height: 100px;
 }
 
 
