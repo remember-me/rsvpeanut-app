@@ -14,10 +14,7 @@ export default Ember.Controller.extend({
   //   category_name: selected (boolean)
   // }
   buildCategories: function() {
-    var events = this.get('model');
-
-    debugger;
-
+    var events = this.get('model.content');
     var eventTypes = events
     .map( function(event) {
       return event.get('event_type');
@@ -34,7 +31,7 @@ export default Ember.Controller.extend({
 
     this.set('categories', categories);
     
-  }.property('model'),
+  }.observes('model.content.@each'),
 
   // dates = {
   //   utcStartDate: "start" (UTC Date - String),
@@ -44,7 +41,7 @@ export default Ember.Controller.extend({
     var currentDate = new Date();
     var nextWeek = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
     this.set('dates', { utcStartDate: currentDate, utcEndDate: nextWeek });
-  }.property('model'),
+  }.observes('model.content.@each'),
 
   popularCnt: 30,
 
@@ -83,14 +80,18 @@ export default Ember.Controller.extend({
   // I have to decalre computed property to get events
   filteredEvents: function () {
     var filteredEvents = this.get('model.content');
-    debugger
+    filteredEvents = filteredEvents.filter( function(event){
+      var lat = parseFloat(event.get('lat'));
+      var long = parseFloat(event.get('long'));
+      return lat && long;
+    });
     if (filteredEvents) {
       filteredEvents = this.filterCategories(filteredEvents);
       filteredEvents = this.filterDates(filteredEvents);
       filteredEvents = this.filterPopularity(filteredEvents);
     }
     return filteredEvents;
-  }.property('isPopular', 'categories', 'dates'),
+  }.property('isPopular', 'categories.@each.selected', 'dates'),
 
   actions: {
     updateDates: function(dates) {

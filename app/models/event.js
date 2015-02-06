@@ -9,6 +9,7 @@ export default DS.Model.extend({
   lat: DS.attr('number'),
   long: DS.attr('number'),
   name: DS.attr('string'),
+  cost: DS.attr('number'),
   source: DS.attr('string'),
   date_start: DS.attr('date'),
   date_end: DS.attr('date'),

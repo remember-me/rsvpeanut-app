@@ -7,13 +7,6 @@ export default Ember.Component.extend({
 
   isDisplayed: false,
 
-  actions: {
-    toggleBody: function(){
-      this.toggleProperty('isDisplayed');
-    },
-
-  },
-
   didInsertElement: function() {
     this.$().foundation(); //or Ember.$(document).foundation();
   }
