@@ -46,7 +46,7 @@ Make use of the many generators for code, try `ember help generate` for more det
 ### Serving-Up to gh-pages
 * `ember build --prod`
 * `grunt gh-pages`
-* [rsvpeanuts site] (http://remember-me.github.io/rsvpeanut-app/)
+
 
 ### Deploying
 
